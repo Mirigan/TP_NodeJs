@@ -39,7 +39,7 @@ module.exports.getListePersonne = function (callback) {
 			// s'il n'y a pas d'erreur de connexion
 			// execution de la requête SQL
 			// il est conseillé de passer la requête dans une variable
-			connexion.query('SELECT per_num, per_nom, per_prenom from personne ORDER BY per_nom, per_prenom ASC', callback);
+			connexion.query('SELECT per_num, per_nom, per_prenom from personne ORDER BY per_nom, per_prenom AS', callback);
 
 			// la connexion retourne dans le pool
 			connexion.release();

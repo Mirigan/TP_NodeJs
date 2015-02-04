@@ -28,6 +28,7 @@ module.exports = function(app){
  //personne
    app.get('/listerPersonne', PersonneController.ListerPersonne);
    app.get('/ajouterPersonne', PersonneController.AjouterPersonne);
+   app.get('/detailsPersonne/:numPersonne', PersonneController.DetailsPersonne);
 
 // tout le reste
   app.get('*', HomeController.Index);

@@ -25,3 +25,20 @@ module.exports.AjouterPersonne = function(request, response){
 
    response.render('ajouterPersonne', response);
 };
+
+// A REVOIR en fonction de étudiant ou personnel
+module.exports.DetailsPersonne = function(request, response){
+
+  numPersonne = request.params.numPersonne;
+
+  model.getPersonne(numPersonne, function(err, result){
+    if(err){
+      // gestion de l'erreur
+      console.log(err);
+      return;
+    }
+
+    response.personne = result;
+    response.render('detailsPersonne/:numPersonne', response);
+  });
+};
