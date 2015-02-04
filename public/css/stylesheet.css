@@ -131,6 +131,7 @@ th {
     min-height: 380px;
     text-align: center;
     width: 79%;
+    margin-bottom: 30px;
 }
 #spacer {
     clear: both;
