@@ -1,3 +1,26 @@
+<!--
+* Celle vue permet d'afficher l'intégralité des personnes
+-->
+
 {{> enTete}}
 {{> menu}}
- <h1>Liste des personnes enregistrées</h1>
+
+<h1>Liste des personnes enregistrées</h1>
+<p>
+  Il y a actuellement {{nbPersonne}} enregistrées
+</p>
+
+<table>
+  <tr>
+    <th>Numéro</th>
+    <th>Nom</th>
+    <th>Prénom</th>
+  </tr>
+  {{#each listePersonne}} <!--  parcours de listePersonne -->
+    <tr>
+      <td><a href="/detailsPersonne/{{this.per_num}}" title="Cliquez pour plus d'informations sur cette personne">{{this.per_num}}</a></td>
+      <td>{{this.per_nom}}</td>
+      <td>{{this.per_prenom}}</td>
+    </tr>
+  {{/each}}
+</table>
