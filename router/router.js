@@ -22,6 +22,7 @@ module.exports = function(app){
 
 // connection
    app.get('/connect', ConnectController.Connect);
+   app.post('/verifConnect', ConnectController.VerifConnect)
    app.get('/deconnect', ConnectController.Deconnect);
 
 
