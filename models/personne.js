@@ -46,3 +46,63 @@ module.exports.getListePersonne = function (callback) {
 		}
 	});
 };
+
+/**
+*
+*/
+module.exports.isEtudiant(numPersonne){
+	db.getConnection(function(err, connexion)
+	{
+		if(!err)
+		{
+			// S'il n'y a pas d'erreur de connexion
+			req = "SELECT * FROM etudiant WHERE per_num = "+numPersonne;
+			connexion.query(req, callback);
+
+			if(callback != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	});
+}
+
+/**
+*
+*/
+module.exports.getEtudiant = function(numPersonne, callback){
+	// Connexion à la base
+	db.getConnection(function(err, connexion)
+	{
+		if(!err)
+		{
+			// S'il n'y a pas d'errreur de connexion
+			req = "SELECT * FROM personne p INNER JOIN etudiant e ON p.per_num = e.per_num WHERE per_num = "+numPersonne;
+			connexion.query(req, callback);
+
+			connexion.release();
+		}
+	});
+}
+
+/**
+*
+*/
+module.exports.getSalarie = function(numPersonne, callback){
+	// Connexion à la base
+	db.getConnection(function(err, connexion)
+	{
+		if(!err)
+		{
+			// S'il n'y a pas d'errreur de connexion
+			req = "SELECT * FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num WHERE per_num = "+numPersonne;
+			connexion.query(req, callback);
+
+			connexion.release();
+		}
+	});
+}

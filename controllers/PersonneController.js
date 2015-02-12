@@ -31,14 +31,36 @@ module.exports.DetailsPersonne = function(request, response){
 
   numPersonne = request.params.numPersonne;
 
-  model.getPersonne(numPersonne, function(err, result){
+  model.isEtudiant(numPersonne, function(err, result){
     if(err){
       // gestion de l'erreur
       console.log(err);
       return;
     }
 
-    response.personne = result;
+    if(result)
+    {
+      model.getEtudiant(numPersonne, function(err, result){
+        if(err){
+          console.log(err);
+          return;
+        }
+
+        response.etu = result;
+      });
+    }
+    else
+    {
+      model.getSalarie(numPersonne, function(err, result){
+        if(err){
+          console.log(err);
+          return;
+        }
+
+        response.sal = result;
+      });
+    }
+
     response.render('detailsPersonne/:numPersonne', response);
   });
 };
