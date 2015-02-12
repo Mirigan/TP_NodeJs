@@ -17,9 +17,7 @@ module.exports.VerifConnect = function(request, response){
 				return;
 		}
 
-		console.log(result);
-
-		if (result.length == 0){
+		if (result.length === 0){
 			response.render('connect', response);
 		}
 		else
