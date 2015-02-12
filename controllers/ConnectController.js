@@ -9,10 +9,24 @@ module.exports.Connect = function(request, response){
 module.exports.VerifConnect = function(request, response){
 
 	response.title = 'Vérification du mot de passe';
+	var data = {login:request.body.login, pass:request.body.pass};
+	model.getLoginOk( data,function(err, result){
+		if (err) {
+				// gestion de l'erreur
+				console.log(err);
+				return;
+		}
 
-	
+		console.log(result);
 
-	response.render('connect', response);
+		if (result.length == 0){
+			response.render('connect', response);
+		}
+		else
+		{
+			response.render('connection', response);
+		}
+	});
 };
 
 
