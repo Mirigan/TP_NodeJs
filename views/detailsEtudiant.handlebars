@@ -1,0 +1,23 @@
+<!--
+* Celle vue permet d'afficher les détails d'un étudiant
+-->
+
+{{> enTete}}
+{{> menu}}
+
+<h1>Détails sur l'étudiant {{etu.per_prenom}} {{etu.per_nom}}</h1>
+
+<table>
+  <tr>
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>Mail</th>
+    <th>Téléphone</th>
+    <th>Département</th>
+    <th>Ville</th>
+  </tr>
+  <tr>
+    <td>{{etu.per_nom}}</td>
+    <td>{{etu.per_prenom}}</td>
+  </tr>
+</table>

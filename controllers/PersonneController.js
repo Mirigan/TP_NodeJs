@@ -38,7 +38,7 @@ module.exports.DetailsPersonne = function(request, response){
       return;
     }
 
-    if(result)
+    if(typeof(result[0]) !== 'undefined')
     {
       model.getEtudiant(numPersonne, function(err, result){
         if(err){
@@ -46,7 +46,9 @@ module.exports.DetailsPersonne = function(request, response){
           return;
         }
 
-        response.etu = result;
+        response.etu = result[0];
+        console.log(response.etu);
+        response.render('detailsEtudiant', response);
       });
     }
     else
@@ -57,10 +59,10 @@ module.exports.DetailsPersonne = function(request, response){
           return;
         }
 
-        response.sal = result;
+        response.sal = result[0];
+        console.log(response.sal);
+        response.render('detailsSalarie', response);
       });
     }
-
-    response.render('detailsPersonne/:numPersonne', response);
   });
 };
