@@ -5,4 +5,23 @@
 {{> enTete}}
 {{> menu}}
 
-<h1>Détails d'un salarié</h1>
+<h1>Détails sur le salarié {{sal.per_prenom}} {{sal.per_nom}}</h1>
+
+<table>
+  <tr>
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>Mail</th>
+    <th>Téléphone</th>
+    <th>Téléphone pro</th>
+    <th>Fonction</th>
+  </tr>
+  <tr>
+    <td>{{sal.per_nom}}</td>
+    <td>{{sal.per_prenom}}</td>
+    <td>{{sal.per_mail}}</td>
+    <td>{{sal.per_tel}}</td>
+    <td>{{sal.sal_telprof}}</td>
+    <td>{{sal.fon_libelle}}</td>
+  </tr>
+</table>
