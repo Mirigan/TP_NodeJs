@@ -1,3 +1,39 @@
 {{> enTete}}
-{{> menu}}	
-<h1>Ajouter des personnes</h1>
+{{> menu}}
+
+<h1>Ajouter une personne</h1>
+
+<form id="ajouterPersonne" method="POST" action="">
+  <fieldset>
+    <label for="nom">Nom : </label>
+    <input type="text" name="nom"/>
+    <br/>
+
+    <label for="prenom">Prénom : </label>
+    <input type="text" name="prenom"/>
+    <br/>
+
+    <label for="tel">Téléphone : </label>
+    <input type="text" name="tel" pattern="0[0-9]{9}" maxlength="10"/>
+    <br/>
+
+    <label for="mail">Mail : </label>
+    <input type="mail" name="mail"/>
+    <br/>
+
+    <label for="login">Login : </label>
+    <input type="text" pattern="login" maxlength="20"/>
+    <br/>
+
+    <label for="mdp">Mot de passe : </label>
+    <input type="password" name="mdp" maxlength="20"/>
+    <br/>
+
+    <label for="categorie">Catégorie : </label>
+    <input type="radio" name="categorie" value="etudiant"/> Etudiant
+    <input type="radio" name="categorie" value="personnel"/> Personnel
+    <br/>
+  </fieldset>
+
+  <input type="submit" value="Valider"/>
+</form>

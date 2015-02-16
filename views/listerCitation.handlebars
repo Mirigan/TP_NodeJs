@@ -1,7 +1,8 @@
 {{> enTete}}
 {{> menu}}
+
 <h1>Liste des citations déposées</h1>
-<p>Il y a actuellement {{nbCitation}} villes enregistrées</p>
+<p>Il y a actuellement {{nbCitation}} citations enregistrées</p>
 
 <table>
   <tr>
@@ -11,6 +12,11 @@
     <th>Moyenne des notes</th>
   </tr>
   {{#each listeCitation}} <!--  parcours de listeCitation -->
-    <tr><td>{{this.per_nom}}</td><td>{{this.cit_libelle}}</td><td>{{this.cit_date}}</td><td>{{this.cit_moy}}</td></tr>
+    <tr>
+      <td>{{this.per_nom}}</td>
+      <td>{{this.cit_libelle}}</td>
+      <td>{{this.cit_date}}</td>
+      <td>{{this.cit_moy}}</td>
+    </tr>
   {{/each}}
 </table>
