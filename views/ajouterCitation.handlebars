@@ -5,7 +5,11 @@
 <form method="POST" action="">
   <fieldset>
     <label for="enseignant">Enseignant : </label>
-    <!-- faire la liste déroulante des enseignants -->
+    <select name="enseignant">
+      {{#each listeSalaries}}
+        <option id="{{this.per_num}}">{{this.per_nom}}
+      {{/each}}
+    </select>
     <br/>
 
     <label for="date">Date Citation : </label>

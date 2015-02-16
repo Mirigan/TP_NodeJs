@@ -23,7 +23,7 @@ module.exports.VerifConnect = function(request, response){
 		else
 		{
       request.session.per_login = result[0].per_login;
-      console.log(result[0].per_login);
+      console.log("per_login :"+result[0].per_login);
 			response.render('connection', response);
 		}
 	});

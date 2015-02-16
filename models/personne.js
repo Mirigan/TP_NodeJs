@@ -91,7 +91,27 @@ module.exports.getSalarie = function(numPersonne, callback){
 		if(!err)
 		{
 			// S'il n'y a pas d'errreur de connexion
-			req = "SELECT per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num INNER JOIN fonction f ON s.fon_num = f.fon_num WHERE p.per_num = "+numPersonne;
+			req = "SELECT per_num, per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num INNER JOIN fonction f ON s.fon_num = f.fon_num WHERE p.per_num = "+numPersonne;
+			connexion.query(req, callback);
+
+			connexion.release();
+		}
+	});
+}
+
+/**
+* fonction qui nous permet d'avoir tout les salariés
+*/
+module.exports.getAllSalarie = function(callback){
+	// Connexion à la base
+	db.getConnection(function(err, connexion)
+	{
+		if(!err)
+		{
+			// S'il n'y a pas d'errreur de connexion
+			req =  "SELECT per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle ";
+			req += "FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num ";
+			req += "INNER JOIN fonction f ON s.fon_num = f.fon_num ";
 			connexion.query(req, callback);
 
 			connexion.release();
