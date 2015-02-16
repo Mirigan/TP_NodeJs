@@ -1,3 +1,20 @@
 {{> enTete}}
-{{> menu}}		
+{{> menu}}
 <h1> Ajouter une citation</h1>
+
+<form method="POST" action="">
+  <fieldset>
+    <label for="enseignant">Enseignant : </label>
+    <!-- faire la liste déroulante des enseignants -->
+    <br/>
+
+    <label for="date">Date Citation : </label>
+    <input type="text" name="date"/>
+    <br/>
+
+    <label for="citation">Citation : </label>
+    <textarea name="citation" rows=2></textarea>
+  </fieldset>
+
+  <input type="submit" value="Valider"/>
+</form>
