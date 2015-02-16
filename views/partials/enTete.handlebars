@@ -1,7 +1,11 @@
 <div id="header">
 		<div id="connect">
+			{{#if session.per_login}}
+				Utilisateur : <b>{{session.per_login}} </b><a href="/deconnect">Déconnexion</a>
+			{{else}}
+				<a href="/connect">Connexion</a>
 
-			<a href="/connect">Connexion</a>
+			{{/if}}
 		</div>
 		<div id="entete">
 			<div id="logo">

@@ -22,32 +22,19 @@ module.exports.VerifConnect = function(request, response){
 		}
 		else
 		{
+      request.session.per_login = result[0].per_login;
+      console.log(result[0].per_login);
 			response.render('connection', response);
 		}
 	});
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  // ////////////////////////////////////////////// D E C O N N E C T   U T I L I S A T E U R
 module.exports.Deconnect = function(request, response){
+  if(request.session.per_login != null){
+    request.session.per_login = null;
 
-	 response.redirect('/connect');
+    response.render('deconnection', response);
+  }
+
 };
