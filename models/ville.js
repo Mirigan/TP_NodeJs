@@ -16,11 +16,30 @@ module.exports.getListeVille = function (callback) {
         if(!err){
         	  // s'il n'y a pas d'erreur de connexion
         	  // execution de la requête SQL
-						// il est conseillé de passer la requête dans une variable     	  
+						// il est conseillé de passer la requête dans une variable
             connexion.query('SELECT vil_num, vil_nom from ville', callback);
 
             // la connexion retourne dans le pool
             connexion.release();
          }
       });
+};
+
+/*
+* Ajouter une ville
+*/
+module.exports.ajouterVille = function (nomVille, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+				if(!err){
+						// s'il n'y a pas d'erreur de connexion
+						// execution de la requête SQL
+						// il est conseillé de passer la requête dans une variable
+						req = "INSERT INTO ville SET vil_nom = '"+nomVille+"'";
+						connexion.query(req, callback);
+
+						// la connexion retourne dans le pool
+						connexion.release();
+				}
+			});
 };
