@@ -34,6 +34,15 @@ module.exports.AjouterCitation = 	function(request, response){
   });
 } ;
 
+module.exports.VerifCitation = function(request, response){
+  reponse.title = 'Ajouter une citation';
+
+  
+
+  response.render('verifCitation', response);
+
+};
+
 
 // ////////////////////////////////////////////// R E C H E R C H E R     C I T A T I O N
 

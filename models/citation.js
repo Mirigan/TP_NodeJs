@@ -19,3 +19,21 @@ module.exports.getListeCitation = function (callback){
     }
   });
 };
+
+/**
+* finir la fonction d'insertion !!
+*/
+module.exports.ajouterCitation = function (callback){
+  // connection à la base
+  db.getConnection(function(err, connexion){
+    if(!err){
+      // s'il n'y a pas d'erreur de connexion
+      // execution de la requête SQL
+      var req = " ";
+      connexion.query(req, callback);
+
+      //la connexion retourne dans le pool
+      connexion.release();
+    }
+  });
+};

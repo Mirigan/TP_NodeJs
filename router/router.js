@@ -13,6 +13,7 @@ module.exports = function(app){
 // citations
     app.get('/listerCitation', CitationController.ListerCitation);
     app.get('/ajouterCitation', CitationController.AjouterCitation);
+    app.post('/verifCitation', CitationController.VerifCitation);
     app.get('/rechercherCitation', CitationController.RechercherCitation);
 
  // villes
