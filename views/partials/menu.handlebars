@@ -12,23 +12,26 @@
 		<p><img class="menuImage" src="./image/personne.png" alt="Personne"/>Personne</p>
 		<ul>
 			<li><a href="/listerPersonne">Lister</a></li>
-			<!-- faire le teste pour savoir si une personne est connecté -->
-			<li><a href="/ajouterPersonne">Ajouter</a></li>
+			{{#if session.per_login}}
+				<li><a href="/ajouterPersonne">Ajouter</a></li>
+			{{/if}}
 		</ul>
 
 		<p><img class="menuImage" src="/image/citation.gif" alt="Citation"/>Citation</p>
 		<ul>
 			<li><a href="/listerCitation">Lister</a></li>
-			<!-- faire le teste pour savoir si une personne est connecté -->
-			<li><a href="/rechercherCitation">Rechercher</a></li>
-			<li><a href="/ajouterCitation">Ajouter</a></li>
+			{{#if session.per_login}}
+				<li><a href="/rechercherCitation">Rechercher</a></li>
+				<li><a href="/ajouterCitation">Ajouter</a></li>
+			{{/if}}
 		</ul>
 		<p><img class="menuImage" src="/image/ville.png"  alt="Ville"/>Ville</p>
 		<ul>
 			<li><a href="/listerVille">Lister</a></li>
-			<!-- faire le teste pour savoir si une personne est connecté -->
-			<li><a href="/ajouterVille">Ajouter</a></li>
-			<li><a href="/modifierVille">Modifier</a></li>
+			{{#if session.per_login}}
+				<li><a href="/ajouterVille">Ajouter</a></li>
+				<li><a href="/modifierVille">Modifier</a></li>
+			{{/if}}
 		</ul>
 	</div>
 </div>
