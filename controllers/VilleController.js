@@ -36,7 +36,28 @@ module.exports.ListerVille = function(request, response){
 module.exports.AjouterVille = function(request, response){
 
    response.title = 'Ajouter des villes';
-   response.render('ajoutVille', response);
+   response.render('ajouterVille', response);
+};
+
+module.exports.AjouterVilleOK = function(request, response){
+
+   response.title = 'Ajouter des villes';
+   model.ajouterVille(request.body.nomVille, function(err, result){
+     if(err){
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     if(result.length === 0){
+       response.ajoutOk = false;
+     }
+     else{
+       response.ajoutOK = true;
+     }
+
+     response.nomVille = request.body.nomVille;
+     response.render('ajouterVilleOK', response);
+   });
 };
 
 //////////////////////////////////////////////// I N S E R E R     V I L L E
@@ -44,7 +65,7 @@ module.exports.AjouterVille = function(request, response){
 module.exports.InsertVille = function(request, response){
 
   response.title = 'Insertion d\'une ville';
- 	response.render('ajoutVille', response);
+ 	response.render('ajouterVille', response);
 };
 
 //////////////////////////////////////////////// M O D I F I E R     V I L L E

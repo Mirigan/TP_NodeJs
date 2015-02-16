@@ -1,0 +1,14 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Ajouter une ville</h1>
+
+<p>
+  {{#if ajoutOK}}
+    <img src="/image/valid.png"/>
+    La ville "<b>{{nomVille}}</b>" a été ajoutée avec succès.
+  {{else}}
+    <img src="/image/erreur.png"/>
+    La ville "<b>{{nomVille}}</b>" n'a pas pu être ajoutée...
+  {{/if}}
+</p>

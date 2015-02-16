@@ -26,7 +26,6 @@ module.exports.AjouterPersonne = function(request, response){
    response.render('ajouterPersonne', response);
 };
 
-// A REVOIR en fonction de étudiant ou personnel
 module.exports.DetailsPersonne = function(request, response){
 
   numPersonne = request.params.numPersonne;
