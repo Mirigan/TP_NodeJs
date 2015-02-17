@@ -36,8 +36,7 @@ module.exports.AjouterCitation = 	function(request, response){
 
 module.exports.VerifCitation = function(request, response){
   reponse.title = 'Ajouter une citation';
-
-  
+  //création d'une variable qui va contenir toutes informations de la citation
 
   response.render('verifCitation', response);
 
