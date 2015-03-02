@@ -109,7 +109,7 @@ module.exports.getAllSalarie = function(callback){
 		if(!err)
 		{
 			// S'il n'y a pas d'errreur de connexion
-			req =  "SELECT per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle ";
+			req =  "SELECT per_num, per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle ";
 			req += "FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num ";
 			req += "INNER JOIN fonction f ON s.fon_num = f.fon_num ";
 			connexion.query(req, callback);

@@ -22,8 +22,12 @@ module.exports.VerifConnect = function(request, response){
 		}
 		else
 		{
+      date = new Date();
       request.session.per_login = result[0].per_login;
+      request.session.per_num_co = result[0].per_num;
       console.log("per_login :"+result[0].per_login);
+      console.log("per_num_co :"+result[0].per_num);
+      console.log("date : "+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
 			response.render('connection', response);
 		}
 	});

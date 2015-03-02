@@ -35,10 +35,23 @@ module.exports.AjouterCitation = 	function(request, response){
 } ;
 
 module.exports.VerifCitation = function(request, response){
-  reponse.title = 'Ajouter une citation';
+  response.title = 'Ajouter une citation';
   //création d'une variable qui va contenir toutes informations de la citation
 
-  response.render('verifCitation', response);
+  citation = {
+    per_num: request.body.enseignant,
+    per_num_valide: null,
+    per_num_etu: request.session.per_num_co,
+    cit_libelle: request.body.citation,
+    cit_date: request.body.date,
+    cit_valide: 0,
+    cit_date_valide: null,
+    cit_date_depo : date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
+  };
+
+  console.log(citation);
+
+  response.render('ajouterCitationOk', response);
 
 };
 

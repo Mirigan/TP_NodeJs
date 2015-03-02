@@ -23,7 +23,7 @@ module.exports.getListeCitation = function (callback){
 /**
 * finir la fonction d'insertion !!
 */
-module.exports.ajouterCitation = function (callback){
+module.exports.ajouterCitation = function (citation, callback){
   // connection à la base
   db.getConnection(function(err, connexion){
     if(!err){
