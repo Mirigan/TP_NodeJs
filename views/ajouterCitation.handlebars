@@ -7,7 +7,7 @@
     <label for="enseignant">Enseignant : </label>
     <select name="enseignant">
       {{#each listeSalaries}}
-        <option value="{{this.per_num}}">{{this.per_nom}}
+        <option value={{this.per_num}}>{{this.per_nom}}
       {{/each}}
     </select>
     <br/>
