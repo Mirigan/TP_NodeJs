@@ -1,4 +1,4 @@
-
+var model = require('../models/personne.js');
 var db = require('../configDb');
 
 /*
@@ -17,4 +17,34 @@ module.exports.getListeFonction = function (callback) {
       connexion.release();
     }
   });
+};
+
+/*
+* Ajouter une personne
+*/
+module.exports.ajouterSalarie = function (personne, salarie, callback) {
+  // connection à la base
+  db.getConnection(function(err, connexion){
+        if(!err){
+            // s'il n'y a pas d'erreur de connexion
+            // execution de la requête SQL
+            // il est conseillé de passer la requête dans une variable
+            model.ajouterPersonne(personne, function(err, result){
+              if(err){
+                // gestion de l'erreur
+                console.log(err);
+                return;
+              }
+              else
+              {
+                //récupérer l'id du dernier inséré
+              }
+            });
+            //req = "INSERT INTO salarie SET per_num = '"+personne.nom+"', sal_telprof = '"+salarie.telpro+"', fon_num = '"+salarie.fonction+"'";
+            connexion.query(req, callback);
+
+            // la connexion retourne dans le pool
+            connexion.release();
+        }
+      });
 };

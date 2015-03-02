@@ -84,7 +84,7 @@ module.exports.AjouterEtudiantOK = function(request, response)
   request.session.etudiant.annee = request.body.annee;
   request.session.etudiant.departement = request.body.departement;
 
-  model.ajouterEtudiant(request.session.personne, request.session.etudiant, function(err, result){
+  modelEtudiant.ajouterEtudiant(request.session.personne, request.session.etudiant, function(err, result){
     if(err){
       // gestion de l'erreur
       console.log(err);
@@ -104,7 +104,7 @@ module.exports.AjouterSalarieOK = function(request, response)
   request.session.salarie.telpro = request.body.telpro;
   request.session.salarie.fonction = request.body.fonction;
 
-  model.ajouterSalarie(request.session.personne, request.session.salarie, function(err, result){
+  modelSalarie.ajouterSalarie(request.session.personne, request.session.salarie, function(err, result){
     if(err){
       // gestion de l'erreur
       console.log(err);

@@ -118,3 +118,22 @@ module.exports.getAllSalarie = function(callback){
 		}
 	});
 }
+
+/*
+* Ajouter une personne
+*/
+module.exports.ajouterPersonne = function (personne, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+				if(!err){
+						// s'il n'y a pas d'erreur de connexion
+						// execution de la requête SQL
+						// il est conseillé de passer la requête dans une variable
+						req = "INSERT INTO personne SET per_nom = '"+personne.nom+"', per_prenom = '"+personne.prenom+"', per_tel = '"+personne.tel+"', per_mail = '"+personne.mail+"', per_login = '"+personne.login+"', per_pwd = '"+personne.mdp+"'";
+						connexion.query(req, callback);
+
+						// la connexion retourne dans le pool
+						connexion.release();
+				}
+			});
+};
