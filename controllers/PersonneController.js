@@ -1,5 +1,6 @@
 var model = require('../models/personne.js');
 var modelSalarie = require('../models/salarie.js');
+var modelEtudiant = require('../models/etudiant.js');
 
 // ////////////////////////////////////////////// L I S T E R     P E R S O N N E S
 
@@ -42,7 +43,23 @@ module.exports.AjouterPersonneOK = function(request, response){
    // Redirection en fonction de la catégorie
    if(request.body.categorie == 'etudiant')
    {
-     response.render('ajouterEtudiant', response);
+     modelEtudiant.getListeAnnee( function (err, result) {
+       if (err) {
+         // gestion de l'erreur
+         console.log(err);
+         return;
+       }
+       response.listeAnnee = result;
+       modelEtudiant.getListeDepartement( function (err, result) {
+         if (err) {
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+         response.listeDepartement = result;
+         response.render('ajouterEtudiant', response);
+       });
+     });
    }
    else
    {
@@ -52,7 +69,6 @@ module.exports.AjouterPersonneOK = function(request, response){
          console.log(err);
          return;
        }
-       console.log(result);
        response.listeFonction = result;
        response.render('ajouterSalarie', response);
      });
