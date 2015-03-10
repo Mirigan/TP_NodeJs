@@ -1,3 +1,11 @@
 {{> enTete}}
 {{> menu}}
-<p><img src="/image/valid.png" alt="Valide!" >   La citation a bien était ajouté cittation ajouté! </p>
+<p>
+  {{#if ajoutOK}}
+    <img src="/image/valid.png" alt="Valide!" >
+    La citation a bien était ajouté!
+  {{else}}
+    <img src="/image/erreur.png"/>
+    La citation n'a pu être ajouté...!
+  {{/if}}
+</p>

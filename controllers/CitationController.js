@@ -38,20 +38,39 @@ module.exports.VerifCitation = function(request, response){
   response.title = 'Ajouter une citation';
   //création d'une variable qui va contenir toutes informations de la citation
 
+  var tmp = new Array();
+  tmp = request.body.date.split('/');
+
+  var dateOk = tmp[2]+"-"+tmp[1]+"-"+tmp[0]
+
   citation = {
     per_num: request.body.enseignant,
     per_num_valide: null,
     per_num_etu: request.session.per_num_co,
     cit_libelle: request.body.citation,
-    cit_date: request.body.date,
+    cit_date: dateOk,
     cit_valide: 0,
     cit_date_valide: null,
-    cit_date_depo : date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
+    cit_date_depo : date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
   };
 
   console.log(citation);
 
-  response.render('ajouterCitationOk', response);
+  model.ajouterCitation(citation, function(err, result){
+    if(err){
+      // gestion de l'erreur
+      console.log(err);
+      return;
+    }
+    if(result.length === 0){
+      response.ajoutOk = false;
+    }
+    else{
+      response.ajoutOK = true;
+    }
+
+    response.render('ajouterCitationOk', response);
+  });
 
 };
 

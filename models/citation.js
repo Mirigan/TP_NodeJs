@@ -21,7 +21,7 @@ module.exports.getListeCitation = function (callback){
 };
 
 /**
-* finir la fonction d'insertion !!
+* fonction d'insertion d'une citation
 */
 module.exports.ajouterCitation = function (citation, callback){
   // connection à la base
@@ -29,8 +29,8 @@ module.exports.ajouterCitation = function (citation, callback){
     if(!err){
       // s'il n'y a pas d'erreur de connexion
       // execution de la requête SQL
-      var req = " ";
-      connexion.query(req, callback);
+      var req = "INSERT INTO citation SET ? ";
+      connexion.query(req, citation, callback);
 
       //la connexion retourne dans le pool
       connexion.release();

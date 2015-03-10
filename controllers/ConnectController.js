@@ -9,6 +9,7 @@ module.exports.Connect = function(request, response){
     rand2 = Math.floor(Math.random() * 9) + 1;
     response.nb1 = rand1;
     response.nb2 = rand2;
+    console.log(rand1+" : "+rand2);
 
     response.render('connect', response);
 };
@@ -16,10 +17,7 @@ module.exports.Connect = function(request, response){
 module.exports.VerifConnect = function(request, response){
 
 	response.title = 'Vérification du mot de passe';
-  rep = request.body.somme;
-  if(rand1+rand2 != rep){
-    response.render('connect', response);
-  }
+
 	var data = {login:request.body.login, pass:request.body.pass};
 	model.getLoginOk( data,function(err, result){
 		if (err) {
@@ -28,17 +26,28 @@ module.exports.VerifConnect = function(request, response){
 				return;
 		}
 
-		if (result.length === 0){
-			response.render('connect', response);
+    rep = request.body.somme;
+
+    if(rand1+rand2 != rep){
+      console.log('rep non valide');
+      response.connexionOk = false;
+      response.render('connection', response);
+    }
+		else if (result.length === 0)
+    {
+      console.log('mot de passe ou login non valide');
+      response.connexionOk = false;
+      response.render('connection', response);
 		}
 		else
 		{
       date = new Date();
       request.session.per_login = result[0].per_login;
       request.session.per_num_co = result[0].per_num;
-      console.log("per_login :"+result[0].per_login);
-      console.log("per_num_co :"+result[0].per_num);
+      console.log("per_login :"+request.session.per_login);
+      console.log("per_num_co :"+request.session.per_num_co);
       console.log("date : "+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
+      response.connexionOk = true;
 			response.render('connection', response);
 		}
 	});
