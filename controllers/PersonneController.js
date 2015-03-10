@@ -2,7 +2,7 @@ var model = require('../models/personne.js');
 var modelSalarie = require('../models/salarie.js');
 var modelEtudiant = require('../models/etudiant.js');
 
-// ////////////////////////////////////////////// L I S T E R     P E R S O N N E S
+//////////////////////////////////////////////// L I S T E R     P E R S O N N E S
 
 module.exports.ListerPersonne = function(request, response){
    response.title = 'Liste des personnes';
@@ -20,7 +20,7 @@ module.exports.ListerPersonne = function(request, response){
    });
 };
 
-// ////////////////////////////////////////////// A J O U T E R     P E R S O N N E S
+//////////////////////////////////////////////// A J O U T E R     P E R S O N N E S
 
 module.exports.AjouterPersonne = function(request, response){
    response.title = 'Ajout des personnes';
@@ -100,6 +100,7 @@ module.exports.AjouterEtudiantOK = function(request, response)
       response.prenom = request.session.personne.prenom;
     }
 
+    request.session.personne = null;
     response.render('ajouterEtudiantOK', response);
   });
 }
@@ -129,9 +130,12 @@ module.exports.AjouterSalarieOK = function(request, response)
       response.prenom = request.session.personne.prenom;
     }
 
+    request.session.personne = null;
     response.render('ajouterSalarieOK', response);
   });
 }
+
+//////////////////////////////////////////////// A J O U T E R     P E R S O N N E S
 
 module.exports.DetailsPersonne = function(request, response){
 
@@ -173,7 +177,7 @@ module.exports.DetailsPersonne = function(request, response){
   });
 };
 
-// ////////////////////////////////////////////// M O D I F I E R     P E R S O N N E S
+//////////////////////////////////////////////// M O D I F I E R     P E R S O N N E S
 
 module.exports.ModifierPersonne = function(request, response){
    response.title = 'Modifier une personne';
@@ -189,4 +193,38 @@ module.exports.ModifierPersonne = function(request, response){
      response.nbPersonne = result.length;
      response.render('modifierPersonne', response);
    });
+};
+
+module.exports.ModifierPersonne2 = function(request, response){
+   response.title = 'Modifier une personne';
+
+   numPersonne = request.params.numPersonne;
+
+   model.getPersonne(numPersonne, function(err, result){
+     if(err){
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     response.personne = result[0];
+
+     model.isEtudiant(numPersonne, function(err, result){
+       if(err){
+         // gestion de l'erreur
+         console.log(err);
+         return;
+       }
+
+       if(typeof(result[0]) !== 'undefined')
+       {
+         response.isEtudiant = true;
+       }
+       else
+       {
+         response.isEtudiant = false;
+       }
+
+       response.render('modifierPersonne2', response);
+   });
+ });
 };

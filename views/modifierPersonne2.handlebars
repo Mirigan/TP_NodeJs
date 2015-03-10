@@ -6,32 +6,38 @@
 <form id="modifierPersonne" method="POST" action="/modifierPersonneOK">
   <fieldset>
     <label for="nom">Nom : </label>
-    <input type="text" name="nom"/>
+    <input type="text" name="nom" value="{{personne.per_nom}}"/>
     <br/>
 
     <label for="prenom">Prénom : </label>
-    <input type="text" name="prenom"/>
+    <input type="text" name="prenom" value="{{personne.per_prenom}}"/>
     <br/>
 
     <label for="tel">Téléphone : </label>
-    <input type="text" name="tel" pattern="0[1-9][0-9]{8}" maxlength="10"/>
+    <input type="text" name="tel" pattern="0[1-9][0-9]{8}" maxlength="10" value="{{personne.per_tel}}"/>
     <br/>
 
     <label for="mail">Mail : </label>
-    <input type="mail" name="mail"/>
+    <input type="mail" name="mail" value="{{personne.per_mail}}"/>
     <br/>
 
     <label for="login">Login : </label>
-    <input type="text" name="login" maxlength="20"/>
+    <input type="text" name="login" maxlength="20" value="{{personne.per_login}}"/>
     <br/>
 
     <label for="mdp">Mot de passe : </label>
-    <input type="password" name="mdp" maxlength="20"/>
+    <input type="password" name="mdp" maxlength="20" value="{{personne.per_pwd}}"/>
     <br/>
 
     <label for="categorie">Catégorie : </label>
-    <input type="radio" name="categorie" value="etudiant" checked/> Etudiant
-    <input type="radio" name="categorie" value="personnel"/> Personnel
+    {{#if isEtudiant}}
+      <input type="radio" name="categorie" value="etudiant" checked/> Etudiant
+      <input type="radio" name="categorie" value="personnel"/> Personnel
+    {{else}}
+      <input type="radio" name="categorie" value="etudiant"/> Etudiant
+      <input type="radio" name="categorie" value="personnel" checked/> Personnel
+    {{/if}}
+
     <br/>
   </fieldset>
 

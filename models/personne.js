@@ -39,7 +39,26 @@ module.exports.getListePersonne = function (callback) {
 			// s'il n'y a pas d'erreur de connexion
 			// execution de la requête SQL
 			// il est conseillé de passer la requête dans une variable
-			connexion.query('SELECT per_num, per_nom, per_prenom from personne ORDER BY per_nom, per_prenom', callback);
+			connexion.query('SELECT per_num, per_nom, per_prenom FROM personne ORDER BY per_nom, per_prenom', callback);
+
+			// la connexion retourne dans le pool
+			connexion.release();
+		}
+	});
+};
+
+/*
+* Récupérer les informations sur une personne
+*/
+module.exports.getPersonne = function (numPersonne, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+		if(!err){
+			// s'il n'y a pas d'erreur de connexion
+			// execution de la requête SQL
+			// il est conseillé de passer la requête dans une variable
+			req = 'SELECT per_nom, per_prenom, per_tel, per_mail, per_login, per_pwd FROM personne WHERE per_num = '+numPersonne;
+			connexion.query(req, callback);
 
 			// la connexion retourne dans le pool
 			connexion.release();

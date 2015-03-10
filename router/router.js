@@ -29,13 +29,14 @@ module.exports = function(app){
 
 
  //personne
-    app.get('/modifierPersonne', PersonneController.ModifierPersonne);
-   app.get('/listerPersonne', PersonneController.ListerPersonne);
-   app.get('/ajouterPersonne', PersonneController.AjouterPersonne);
-   app.post('/ajouterPersonneOK', PersonneController.AjouterPersonneOK);
-   app.post('/ajouterEtudiantOK', PersonneController.AjouterEtudiantOK);
-   app.post('/ajouterSalarieOK', PersonneController.AjouterSalarieOK);
-   app.get('/detailsPersonne/:numPersonne', PersonneController.DetailsPersonne);
+  app.get('/modifierPersonne', PersonneController.ModifierPersonne);
+  app.get('/modifierPersonne2/:numPersonne', PersonneController.ModifierPersonne2);
+  app.get('/listerPersonne', PersonneController.ListerPersonne);
+  app.get('/ajouterPersonne', PersonneController.AjouterPersonne);
+  app.post('/ajouterPersonneOK', PersonneController.AjouterPersonneOK);
+  app.post('/ajouterEtudiantOK', PersonneController.AjouterEtudiantOK);
+  app.post('/ajouterSalarieOK', PersonneController.AjouterSalarieOK);
+  app.get('/detailsPersonne/:numPersonne', PersonneController.DetailsPersonne);
 
 // tout le reste
   app.get('*', HomeController.Index);
