@@ -1,11 +1,7 @@
-<!--
-* Celle vue permet d'afficher l'intégralité des personnes
--->
-
 {{> enTete}}
 {{> menu}}
 
-<h1>Liste des personnes enregistrées</h1>
+<h1>Modifier une personne</h1>
 
 <div>
   <p>
@@ -14,20 +10,20 @@
 
   <table>
     <tr>
-      <th>Numéro</th>
       <th>Nom</th>
       <th>Prénom</th>
+      <th>Modifier</th>
     </tr>
     {{#each listePersonne}} <!--  parcours de listePersonne -->
       <tr>
-        <td><a href="/detailsPersonne/{{this.per_num}}" title="Cliquez pour plus d'informations sur cette personne">{{this.per_num}}</a></td>
         <td>{{this.per_nom}}</td>
         <td>{{this.per_prenom}}</td>
+        <td><a href="/modifierPersonne2/{{this.per_num}}" title="Cliquez pour modifier cette personne"><img src="/image/modifier.png"/></a></td>
       </tr>
     {{/each}}
   </table>
 
   <p>
-    Cliquez sur le numéro de la personne pour obtenir plus d'informations.
+    Choisissez la personne à modifier.
   </p>
 </div>

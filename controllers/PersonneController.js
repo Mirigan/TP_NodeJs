@@ -172,3 +172,21 @@ module.exports.DetailsPersonne = function(request, response){
     }
   });
 };
+
+// ////////////////////////////////////////////// M O D I F I E R     P E R S O N N E S
+
+module.exports.ModifierPersonne = function(request, response){
+   response.title = 'Modifier une personne';
+
+   model.getListePersonne(function(err, result){
+     if(err){
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+
+     response.listePersonne = result;
+     response.nbPersonne = result.length;
+     response.render('modifierPersonne', response);
+   });
+};
