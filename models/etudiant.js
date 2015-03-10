@@ -1,3 +1,4 @@
+var model = require('../models/personne.js');
 var db = require('../configDb');
 
 /*
@@ -34,4 +35,33 @@ module.exports.getListeDepartement = function (callback) {
       connexion.release();
     }
   });
+};
+
+/*
+* Ajouter un salarié
+*/
+module.exports.ajouterEtudiant = function (personne, etudiant, callback) {
+  // connection à la base
+  db.getConnection(function(err, connexion){
+        if(!err){
+            // s'il n'y a pas d'erreur de connexion
+            // execution de la requête SQL
+            // il est conseillé de passer la requête dans une variable
+            model.ajouterPersonne(personne, function(err, result){
+              if(err){
+                // gestion de l'erreur
+                console.log(err);
+                return;
+              }
+              else
+              {
+                req = "INSERT INTO etudiant SET per_num = '"+result.insertId+"', dep_num = '"+etudiant.departement+"', div_num = '"+etudiant.annee+"'";
+                connexion.query(req, callback);
+              }
+
+              // la connexion retourne dans le pool
+              connexion.release();
+            });
+        }
+      });
 };
