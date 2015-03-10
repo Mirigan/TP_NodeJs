@@ -110,9 +110,18 @@ module.exports.AjouterSalarieOK = function(request, response)
       console.log(err);
       return;
     }
-  });
 
-  response.render('ajouterSalarieOK', response);
+    if(result.length === 0){
+      response.ajoutOk = false;
+    }
+    else{
+      response.ajoutOK = true;
+      response.nom = request.session.personne.nom;
+      response.prenom = request.session.personne.prenom;
+    }
+
+    response.render('ajouterSalarieOK', response);
+  });
 }
 
 module.exports.DetailsPersonne = function(request, response){

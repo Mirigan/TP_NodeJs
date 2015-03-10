@@ -4,5 +4,11 @@
 <h1>Ajouter un salarié</h1>
 
 <p>
-  Le salarié a bien été ajouté.
+  {{#if ajoutOK}}
+    <img src="/image/valid.png"/>
+    Le salarié "<b>{{prenom}} {{nom}}</b>" a été ajouté avec succès.
+  {{else}}
+    <img src="/image/erreur.png"/>
+    Le salarié "<b>{{prenom}} {{nom}}</b>" n'a pas pu être ajouté...
+  {{/if}}
 </p>

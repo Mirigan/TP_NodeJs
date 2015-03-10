@@ -73,9 +73,8 @@ module.exports.getEtudiant = function(numPersonne, callback){
 		if(!err)
 		{
 			// S'il n'y a pas d'errreur de connexion
-			req = "SELECT per_nom, per_prenom, per_mail, per_tel, dep_nom, vil_nom FROM personne p INNER JOIN etudiant e ON p.per_num = e.per_num INNER JOIN departement d ON e.dep_num = d.dep_num INNER JOIN ville v ON d.vil_num = v.vil_num WHERE p.per_num = "+numPersonne;
+			req = "SELECT p.per_nom, per_prenom, per_mail, per_tel, dep_nom, vil_nom FROM personne p INNER JOIN etudiant e ON p.per_num = e.per_num INNER JOIN departement d ON e.dep_num = d.dep_num INNER JOIN ville v ON d.vil_num = v.vil_num WHERE p.per_num = "+numPersonne;
 			connexion.query(req, callback);
-
 			connexion.release();
 		}
 	});
@@ -91,7 +90,7 @@ module.exports.getSalarie = function(numPersonne, callback){
 		if(!err)
 		{
 			// S'il n'y a pas d'errreur de connexion
-			req = "SELECT per_num, per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num INNER JOIN fonction f ON s.fon_num = f.fon_num WHERE p.per_num = "+numPersonne;
+			req = "SELECT p.per_num, per_nom, per_prenom, per_mail, per_tel, sal_telprof, fon_libelle FROM personne p INNER JOIN salarie s ON p.per_num = s.per_num INNER JOIN fonction f ON s.fon_num = f.fon_num WHERE p.per_num = "+numPersonne;
 			connexion.query(req, callback);
 
 			connexion.release();

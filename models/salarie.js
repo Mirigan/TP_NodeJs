@@ -20,7 +20,7 @@ module.exports.getListeFonction = function (callback) {
 };
 
 /*
-* Ajouter une personne
+* Ajouter un salarié
 */
 module.exports.ajouterSalarie = function (personne, salarie, callback) {
   // connection à la base
@@ -37,14 +37,13 @@ module.exports.ajouterSalarie = function (personne, salarie, callback) {
               }
               else
               {
-                //récupérer l'id du dernier inséré
+                req = "INSERT INTO salarie SET per_num = '"+result.insertId+"', sal_telprof = '"+salarie.telpro+"', fon_num = '"+salarie.fonction+"'";
+                connexion.query(req, callback);
               }
-            });
-            //req = "INSERT INTO salarie SET per_num = '"+personne.nom+"', sal_telprof = '"+salarie.telpro+"', fon_num = '"+salarie.fonction+"'";
-            connexion.query(req, callback);
 
-            // la connexion retourne dans le pool
-            connexion.release();
+              // la connexion retourne dans le pool
+              connexion.release();
+            });
         }
       });
 };

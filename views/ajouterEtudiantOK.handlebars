@@ -1,0 +1,14 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Ajouter un étudiant</h1>
+
+<p>
+  {{#if ajoutOK}}
+    <img src="/image/valid.png"/>
+    L'étudiant "<b>{{prenom}} {{nom}}</b>" a été ajouté avec succès.
+  {{else}}
+    <img src="/image/erreur.png"/>
+    L'étudiant "<b>{{prenom}} {{nom}}</b>" n'a pas pu être ajouté...
+  {{/if}}
+</p>
