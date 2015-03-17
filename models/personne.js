@@ -158,3 +158,25 @@ module.exports.ajouterPersonne = function (personne, callback) {
 				}
 			});
 };
+
+/*
+* Modifier une personne
+*/
+module.exports.modifierPersonne = function (personne, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+				if(!err){
+						// s'il n'y a pas d'erreur de connexion
+						// execution de la requête SQL
+						// il est conseillé de passer la requête dans une variable
+						var sha256 = crypto.createHash("sha256"); // cryptage en sha256
+						sha256.update(personne.mdp, "utf8");
+						var mdpCrypte = sha256.digest("base64");
+						req = "UPDATE personne SET per_nom = '"+personne.nom+"', per_prenom = '"+personne.prenom+"', per_tel = '"+personne.tel+"', per_mail = '"+personne.mail+"', per_login = '"+personne.login+"', per_pwd = '"+mdpCrypte+"' WHERE per_num = "+personne.num;
+						connexion.query(req, callback);
+
+						// la connexion retourne dans le pool
+						connexion.release();
+				}
+			});
+};
