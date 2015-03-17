@@ -37,3 +37,42 @@ module.exports.ajouterCitation = function (citation, callback){
     }
   });
 };
+
+
+/**
+* fonction de recherche de citations par date
+*/
+module.exports.getListeDateCitation = function(callback){
+  // connection à la base
+  db.getConnection(function(err, connexion){
+    if(!err){
+      // s'il n'y a pas d'erreur de connexion
+      // execution de la requête SQL
+      var req = "SELECT date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c ";
+      req += " where cit_valide = 1 AND cit_date_valide is not null"
+      connexion.query(req, date, callback);
+
+      //la connexion retourne dans le pool
+      connexion.release();
+    }
+
+  });
+};
+
+module.exports.getListePersonneDepCitValide = function(callback){
+  // connection à la base
+  db.getConnection(function(err, connexion){
+    if(!err){
+      // s'il n'y a pas d'erreur de connexion
+      // execution de la requête SQL
+      var req = "SELECT p.per_num, per_nom FROM personne p ";
+      req += " inner join citation c on c.per_num = p.per_num";
+      req += " where cit_valide = 1 AND cit_date_valide is not null"
+      connexion.query(req, date, callback);
+
+      //la connexion retourne dans le pool
+      connexion.release();
+    }
+
+  });
+};
