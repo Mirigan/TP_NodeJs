@@ -1,0 +1,26 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Modifier un étudiant</h1>
+
+<form id="modifierEtudiant" method="POST" action="/modifierEtudiantOK">
+  <fieldset>
+    <label for="annee">Année : </label>
+    <select name="annee">
+      {{#each listeAnnee}} <!--  parcours de listeAnnee -->
+        <option value="{{this.div_num}}">{{this.div_nom}}</option>
+      {{/each}}
+    </select>
+    <br/>
+
+    <label for="departement">Département : </label>
+    <select name="departement">
+      {{#each listeDepartement}} <!--  parcours de listeDepartement -->
+        <option value="{{this.dep_num}}">{{this.dep_nom}}</option>
+      {{/each}}
+    </select>
+    <br/>
+  </fieldset>
+
+  <input type="submit" value="Valider"/>
+</form>

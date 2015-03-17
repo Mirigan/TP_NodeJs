@@ -1,0 +1,21 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Modifier un salarié</h1>
+
+<form id="modifierSalarie" method="POST" action="/modifierSalarieOK">
+  <fieldset>
+    <label for="telpro">Téléphone professionnel : </label>
+    <input type="text" name="telpro" pattern="0[1-9][0-9]{8}" maxlength="10" value="{{sal.sal_telprof}}"/>
+    <br/>
+
+    <label for="fonction">Fonction : </label>
+    <select name="fonction">
+      {{#each listeFonction}} <!--  parcours de listeFonction -->
+        <option value="{{this.fon_num}}">{{this.fon_libelle}}</option>
+      {{/each}}
+    </select>
+  </fieldset>
+
+  <input type="submit" value="Valider"/>
+</form>

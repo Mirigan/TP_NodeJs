@@ -31,11 +31,9 @@
 
     <label for="categorie">Catégorie : </label>
     {{#if isEtudiant}}
-      <input type="radio" name="categorie" value="etudiant" checked/> Etudiant
-      <input type="radio" name="categorie" value="personnel"/> Personnel
+      <span>Etudiant</span>
     {{else}}
-      <input type="radio" name="categorie" value="etudiant"/> Etudiant
-      <input type="radio" name="categorie" value="personnel" checked/> Personnel
+      <span>Personnel</span>
     {{/if}}
 
     <br/>

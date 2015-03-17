@@ -198,9 +198,10 @@ module.exports.ModifierPersonne = function(request, response){
 module.exports.ModifierPersonne2 = function(request, response){
    response.title = 'Modifier une personne';
 
-   numPersonne = request.params.numPersonne;
+   request.session.personne = new Object();
+   request.session.personne.num = request.params.numPersonne;
 
-   model.getPersonne(numPersonne, function(err, result){
+   model.getPersonne(request.params.numPersonne, function(err, result){
      if(err){
        // gestion de l'erreur
        console.log(err);
@@ -208,7 +209,7 @@ module.exports.ModifierPersonne2 = function(request, response){
      }
      response.personne = result[0];
 
-     model.isEtudiant(numPersonne, function(err, result){
+     model.isEtudiant(request.params.numPersonne, function(err, result){
        if(err){
          // gestion de l'erreur
          console.log(err);
@@ -224,7 +225,63 @@ module.exports.ModifierPersonne2 = function(request, response){
          response.isEtudiant = false;
        }
 
+       request.session.personne.isEtudiant = response.isEtudiant;
        response.render('modifierPersonne2', response);
    });
  });
+};
+
+module.exports.ModifierPersonneOK = function(request, response){
+   response.title = 'Modifier une personne';
+
+   // Récupération des informations générales sur la personne
+   request.session.personne.nom = request.body.nom;
+   request.session.personne.prenom = request.body.prenom;
+   request.session.personne.tel = request.body.tel;
+   request.session.personne.mail = request.body.mail;
+   request.session.personne.login = request.body.login;
+   request.session.personne.mdp = request.body.mdp;
+
+   if(request.session.personne.isEtudiant) //étudiant
+   {
+     modelEtudiant.getListeAnnee( function (err, result) {
+       if (err) {
+         // gestion de l'erreur
+         console.log(err);
+         return;
+       }
+       response.listeAnnee = result;
+       modelEtudiant.getListeDepartement( function (err, result) {
+         if (err) {
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+         response.listeDepartement = result;
+         response.render('modifierEtudiant', response);
+       });
+     });
+   }
+   else //salarié
+   {
+     model.getSalarie(request.session.personne.num, function(err, result){
+       if(err){
+         console.log(err);
+         return;
+       }
+
+       response.sal = result[0];
+       console.log(response.sal);
+
+       modelSalarie.getListeFonction( function (err, result) {
+         if (err) {
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+         response.listeFonction = result;
+         response.render('modifierSalarie', response);
+       });
+     });
+   }
 };

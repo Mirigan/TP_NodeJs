@@ -147,7 +147,10 @@ module.exports.ajouterPersonne = function (personne, callback) {
 						// s'il n'y a pas d'erreur de connexion
 						// execution de la requête SQL
 						// il est conseillé de passer la requête dans une variable
-						req = "INSERT INTO personne SET per_nom = '"+personne.nom+"', per_prenom = '"+personne.prenom+"', per_tel = '"+personne.tel+"', per_mail = '"+personne.mail+"', per_login = '"+personne.login+"', per_pwd = '"+personne.mdp+"'";
+						var sha256 = crypto.createHash("sha256"); // cryptage en sha256
+						sha256.update(personne.mdp, "utf8");
+						var mdpCrypte = sha256.digest("base64");
+						req = "INSERT INTO personne SET per_nom = '"+personne.nom+"', per_prenom = '"+personne.prenom+"', per_tel = '"+personne.tel+"', per_mail = '"+personne.mail+"', per_login = '"+personne.login+"', per_pwd = '"+mdpCrypte+"'";
 						connexion.query(req, callback);
 
 						// la connexion retourne dans le pool
