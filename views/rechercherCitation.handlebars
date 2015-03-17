@@ -1,5 +1,32 @@
 {{> enTete}}
-{{> menu}}		
+{{> menu}}
 <h1> Rechercher une citation</h1>
-		
-	
+
+<form method="POST" action="/verifCitation">
+	<fieldset>
+		<label for="enseignant">Enseignant : </label>
+		<select name="enseignant">
+			{{#each listeSalaries}}
+				<option value={{this.per_num}}>{{this.per_nom}}
+			{{/each}}
+		</select>
+		<br/>
+
+		<label for="date">Date : </label>
+		<select name="date">
+			{{#each listeDate}}
+				<option value={{this.cit_date}}>{{this.cit_date}}
+			{{/each}}
+		</select>
+		<br/>
+
+		<label for="note">Note : </label>
+		<select name="note">
+			{{#each listeVote}}
+				<option value={{this.vot_valeur}}>{{this.vot_valeur}}
+			{{/each}}
+		</select>
+	</fieldset>
+
+	<input type="submit" value="Valider"/>
+</form>

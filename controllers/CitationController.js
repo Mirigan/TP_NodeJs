@@ -1,5 +1,9 @@
-var model = require('../models/citation.js');
-var model_p = require('../models/personne.js');
+var async=require('async');
+
+var model=require('../models/citation.js');
+var model_p=require('../models/personne.js');
+var model_v=require('../models/vote.js');
+
 
 // ////////////////////////////////////////////// L I S T E R     C I T A T I O N
 
@@ -18,7 +22,7 @@ module.exports.ListerCitation = 	function(request, response){
      });
 };
 
-// ////////////////////////////////////////////// A J O U T E R     C I T A T I O N
+//////////////////////////////////////////////// A J O U T E R     C I T A T I O N
 
 module.exports.AjouterCitation = 	function(request, response){
   response.title = 'Ajouter des citations';
@@ -34,6 +38,10 @@ module.exports.AjouterCitation = 	function(request, response){
   });
 } ;
 
+/*
+pour le teste des mots interdit voir avec le module string et replaceAll pour remplacer les mots
+par des tierts
+*/
 module.exports.VerifCitation = function(request, response){
   response.title = 'Ajouter une citation';
   //création d'une variable qui va contenir toutes informations de la citation
@@ -79,7 +87,29 @@ module.exports.VerifCitation = function(request, response){
 
 module.exports.RechercherCitation = function(request, response){
    response.title = 'Rechercher des citations';
-   response.render('rechercherCitation', response);
 
+   if (request.session.per_login){
+     async.parallel([
+       function(callback){
+         model.getListePersonneDepCitValide(function (errSal, resultSal) {callback(null, resultSal) });
+       },
+       function(callback){
+         model.getListeDateCitation(function (errDate, resultDate) { callback(null, resultDate) });
+       },
+       function(callback){
+         model_v.getNote(function (errVote, resultVote) { callback(null, resultVote) });
+       }
+       ],
+       function(err, result){
+         response.listeSalaries = result[0];
+         response.listeDate = result[1];
+         response.listeVote = result[2];
+         response.render('rechercherCitation', response);
+       }
+     );//async
+   }//fin si login
 
-  } ;
+   else{
+     response.redirect('/');
+   }
+};
