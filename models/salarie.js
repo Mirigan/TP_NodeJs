@@ -58,7 +58,7 @@ module.exports.modifierSalarie = function (numPersonne, salarie, callback) {
             // s'il n'y a pas d'erreur de connexion
             // execution de la requête SQL
             // il est conseillé de passer la requête dans une variable
-            req = "UPDATE salarie SET sal_telprof = "+salarie.telpro+", fon_num = "+salarie.fonction+" WHERE per_num = "+numPersonne;
+            req = "UPDATE salarie SET sal_telprof = '"+salarie.telpro+"', fon_num = "+salarie.fonction+" WHERE per_num = "+numPersonne;
             connexion.query(req, callback);
 
             // la connexion retourne dans le pool
