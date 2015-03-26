@@ -3,6 +3,7 @@ var async=require('async');
 var model=require('../models/citation.js');
 var model_p=require('../models/personne.js');
 var model_v=require('../models/vote.js');
+var model_m = require('../models/mot.js');
 
 
 // ////////////////////////////////////////////// L I S T E R     C I T A T I O N
@@ -42,44 +43,76 @@ module.exports.AjouterCitation = 	function(request, response){
 pour le teste des mots interdit voir avec le module string et replaceAll pour remplacer les mots
 par des tierts
 */
-module.exports.VerifCitation = function(request, response){
+module.exports.AjouterCitationOk = function(request, response){
   response.title = 'Ajouter une citation';
   //création d'une variable qui va contenir toutes informations de la citation
 
-  var tmp = new Array();
-  tmp = request.body.date.split('/');
-
-  var dateOk = tmp[2]+"-"+tmp[1]+"-"+tmp[0]
-
-  citation = {
-    per_num: request.body.enseignant,
-    per_num_valide: null,
-    per_num_etu: request.session.per_num_co,
-    cit_libelle: request.body.citation,
-    cit_date: dateOk,
-    cit_valide: 0,
-    cit_date_valide: null,
-    cit_date_depo : date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
-  };
-
-  console.log(citation);
-
-  model.ajouterCitation(citation, function(err, result){
-    if(err){
-      // gestion de l'erreur
+  model_m.getListeMot(function (err, result) {
+    if (err) {
       console.log(err);
       return;
     }
-    if(result.length === 0){
-      response.ajoutOk = false;
-    }
-    else{
-      response.ajoutOK = true;
+
+    var citation = request.body.citation;
+    var estCorrecte = true;
+    var listeMotsChanges = [];
+    for(var index=0; index<result.length; index++){
+        var mot = result[index].mot_interdit;
+        var motInterdit = citation.match(new RegExp(mot, "i"));
+        while(motInterdit){
+            estCorrecte = false;
+            citation = citation.replace(new RegExp(motInterdit, "g"), '---');
+            listeMotsChanges.push(motInterdit);
+            motInterdit = citation.match(new RegExp(mot, "i"));
+        }
     }
 
-    response.render('ajouterCitationOk', response);
+    if (estCorrecte == false){
+        response.enseignant = request.body.selectEnseignant;
+        response.date = request.body.date;
+        response.citation = citation;
+        response.motsInterdits = listeMotsChanges;
+        model_p.getAllSalarie( function (err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            response.listeSalaries = result;
+            response.render('ajouterCitation', response);
+        });
+
+    } else {
+        var dateAnglaise = request.body.date;
+        var membres = dateAnglaiajouterCitationOkse.split('/');
+        dateAnglaise = new Date(membres[2],membres[1],membres[0]);
+        data = {
+            per_num: parseInt(request.body.selectEnseignant),
+            per_num_valide: null,
+            per_num_etu: request.session.per_num_co,
+            cit_libelle: request.body.citation,
+            cit_date: dateAnglaise,
+            cit_valide: 0,
+            cit_date_valide: null
+
+        };
+        console.log(data);
+        model.ajouterCitation(data, function(err, result){
+          if(err){
+            // gestion de l'erreur
+            console.log(err);
+            return;
+          }
+          if(result.length === 0){
+            response.ajoutOk = false;
+          }
+          else{
+            response.ajoutOK = true;
+          }
+
+          response.render('ajouterCitationOk', response);
+        });
+      }
   });
-
 };
 
 
@@ -116,5 +149,18 @@ module.exports.RechercherCitation = function(request, response){
 
 module.exports.RechercherCitationOk = function(request, response){
   response.title = 'Rechercher des citations';
+
+  if (request.session.per_login){
+    /*if(request.body.enseignant == "tout"){
+
+    }*/
+
+
+
+    response.render('rechercheCitationOk', response);
+  }//fin si login
+  else{
+   response.redirect('/');
+  }
 
 };

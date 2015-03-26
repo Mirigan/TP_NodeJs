@@ -48,7 +48,7 @@ module.exports.getListeDateCitation = function(callback){
     if(!err){
       // s'il n'y a pas d'erreur de connexion
       // execution de la requête SQL
-      var req = "SELECT date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c ";
+      var req = "SELECT distinct date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c ";
       req += " where cit_valide = 1 AND cit_date_valide is not null"
       connexion.query(req, date, callback);
 
@@ -65,7 +65,7 @@ module.exports.getListePersonneDepCitValide = function(callback){
     if(!err){
       // s'il n'y a pas d'erreur de connexion
       // execution de la requête SQL
-      var req = "SELECT p.per_num, per_nom FROM personne p ";
+      var req = "SELECT distinct p.per_num, per_nom FROM personne p ";
       req += " inner join citation c on c.per_num = p.per_num";
       req += " where cit_valide = 1 AND cit_date_valide is not null"
       connexion.query(req, date, callback);
