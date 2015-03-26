@@ -28,15 +28,21 @@ module.exports.ListerCitation = 	function(request, response){
 module.exports.AjouterCitation = 	function(request, response){
   response.title = 'Ajouter des citations';
 
-  model_p.getAllSalarie( function(err, result){
-    if (err) {
-      // gestion de l'erreur
-      console.log(err);
-      return;
-    }
-    response.listeSalaries = result;
-    response.render('ajouterCitation', response);
-  });
+  if (request.session.per_login){
+    model_p.getAllSalarie( function(err, result){
+      if (err) {
+        // gestion de l'erreur
+        console.log(err);
+        return;
+      }
+      response.listeSalaries = result;
+      response.render('ajouterCitation', response);
+    });
+  }//fin si login
+
+  else{
+    response.redirect('/');
+  }
 } ;
 
 /*
@@ -47,72 +53,77 @@ module.exports.AjouterCitationOk = function(request, response){
   response.title = 'Ajouter une citation';
   //création d'une variable qui va contenir toutes informations de la citation
 
-  model_m.getListeMot(function (err, result) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    var citation = request.body.citation;
-    var estCorrecte = true;
-    var listeMotsChanges = [];
-    for(var index=0; index<result.length; index++){
-        var mot = result[index].mot_interdit;
-        var motInterdit = citation.match(new RegExp(mot, "i"));
-        while(motInterdit){
-            estCorrecte = false;
-            citation = citation.replace(new RegExp(motInterdit, "g"), '---');
-            listeMotsChanges.push(motInterdit);
-            motInterdit = citation.match(new RegExp(mot, "i"));
-        }
-    }
-
-    if (estCorrecte == false){
-        response.enseignant = request.body.selectEnseignant;
-        response.date = request.body.date;
-        response.citation = citation;
-        response.motsInterdits = listeMotsChanges;
-        model_p.getAllSalarie( function (err, result) {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            response.listeSalaries = result;
-            response.render('ajouterCitation', response);
-        });
-
-    } else {
-        var dateAnglaise = request.body.date;
-        var membres = dateAnglaiajouterCitationOkse.split('/');
-        dateAnglaise = new Date(membres[2],membres[1],membres[0]);
-        data = {
-            per_num: parseInt(request.body.selectEnseignant),
-            per_num_valide: null,
-            per_num_etu: request.session.per_num_co,
-            cit_libelle: request.body.citation,
-            cit_date: dateAnglaise,
-            cit_valide: 0,
-            cit_date_valide: null
-
-        };
-        console.log(data);
-        model.ajouterCitation(data, function(err, result){
-          if(err){
-            // gestion de l'erreur
-            console.log(err);
-            return;
-          }
-          if(result.length === 0){
-            response.ajoutOk = false;
-          }
-          else{
-            response.ajoutOK = true;
-          }
-
-          response.render('ajouterCitationOk', response);
-        });
+  if (request.session.per_login){
+    model_m.getListeMot(function (err, result) {
+      if (err) {
+        console.log(err);
+        return;
       }
-  });
+
+      var citation = request.body.citation;
+      var estCorrecte = true;
+      var listeMotsChanges = [];
+      for(var index=0; index<result.length; index++){
+          var mot = result[index].mot_interdit;
+          var motInterdit = citation.match(new RegExp(mot, "i"));
+          while(motInterdit){
+              estCorrecte = false;
+              citation = citation.replace(new RegExp(motInterdit, "g"), '---');
+              listeMotsChanges.push(motInterdit);
+              motInterdit = citation.match(new RegExp(mot, "i"));
+          }
+      }
+
+      if (estCorrecte == false){
+          response.enseignant = request.body.selectEnseignant;
+          response.date = request.body.date;
+          response.citation = citation;
+          response.motsInterdits = listeMotsChanges;
+          model_p.getAllSalarie( function (err, result) {
+              if (err) {
+                  console.log(err);
+                  return;
+              }
+              response.listeSalaries = result;
+              response.render('ajouterCitation', response);
+          });
+
+      } else {
+          var dateAnglaise = request.body.date;
+          var membres = dateAnglaiajouterCitationOkse.split('/');
+          dateAnglaise = new Date(membres[2],membres[1],membres[0]);
+          data = {
+              per_num: parseInt(request.body.selectEnseignant),
+              per_num_valide: null,
+              per_num_etu: request.session.per_num_co,
+              cit_libelle: request.body.citation,
+              cit_date: dateAnglaise,
+              cit_valide: 0,
+              cit_date_valide: null
+
+          };
+          console.log(data);
+          model.ajouterCitation(data, function(err, result){
+            if(err){
+              // gestion de l'erreur
+              console.log(err);
+              return;
+            }
+            if(result.length === 0){
+              response.ajoutOk = false;
+            }
+            else{
+              response.ajoutOK = true;
+            }
+
+            response.render('ajouterCitationOk', response);
+          });
+        }
+    });
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
 };
 
 
