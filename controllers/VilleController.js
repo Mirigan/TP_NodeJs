@@ -131,3 +131,21 @@ module.exports.ModifierVilleOK = function(request, response){
      response.render('modifierVilleOK', response);
    });
 };
+
+//////////////////////////////////////////////// S U P P R I M E R     V I L L E
+
+module.exports.SupprimerVille = function(request, response){
+
+   response.title = 'Supprimer une ville';
+
+   model.getListeVille( function (err, result) {
+     if (err) {
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     response.listeVille = result;
+     response.nbVille = result.length;
+     response.render('supprimerVille', response);
+   });
+};

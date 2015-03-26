@@ -1,0 +1,24 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Supprimer une ville</h1>
+
+<div>
+  <p>
+    Il y a actuellement {{nbVille}} villes enregistrées.
+  </p>
+
+  <form method="POST" action="/supprimerVilleOK">
+    <fieldset>
+      <legend>Sélectionnez la ville à supprimer</legend>
+
+      <select name="numVille">
+        {{#each listeVille}} <!--  parcours de listeVille -->
+          <option value="{{this.vil_num}}">{{this.vil_nom}}</option>
+        {{/each}}
+      </select>
+    </fieldset>
+
+    <input type="submit" value="Valider"/>
+  </form>
+</div>
