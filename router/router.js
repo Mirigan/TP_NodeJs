@@ -30,6 +30,8 @@ module.exports = function(app){
 
 
  //personne
+  app.get('/supprimerPersonne', PersonneController.SupprimerPersonne);
+  app.post('/supprimerPersonneOK', PersonneController.SupprimerPersonneOK);
   app.get('/modifierPersonne', PersonneController.ModifierPersonne);
   app.get('/modifierPersonne2/:numPersonne', PersonneController.ModifierPersonne2);
   app.post('/modifierPersonneOK', PersonneController.ModifierPersonneOK);

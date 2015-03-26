@@ -1,0 +1,14 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Supprimer une personne</h1>
+
+<div>
+  {{#if supprOk}}
+    <img src="/image/valid.png"/>
+    La personne a été supprimée avec succès.
+  {{else}}
+    <img src="/image/erreur.png"/>
+    La personne n'a pas pu être supprimée...
+  {{/if}}
+</div>

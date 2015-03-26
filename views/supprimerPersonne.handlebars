@@ -1,0 +1,24 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Supprimer une personne</h1>
+
+<div>
+  <p>
+    Il y a actuellement {{nbPersonne}} personnes enregistrées.
+  </p>
+
+  <form method="POST" action="/supprimerPersonneOK">
+    <fieldset>
+      <legend>Sélectionnez la personne à supprimer</legend>
+
+      <select name="numPersonne">
+        {{#each listePersonne}} <!--  parcours de listePersonne -->
+          <option value="{{this.per_num}}">{{this.per_nom}} {{this.per_prenom}}</option>
+        {{/each}}
+      </select>
+    </fieldset>
+
+    <input type="submit" value="Valider"/>
+  </form>
+</div>

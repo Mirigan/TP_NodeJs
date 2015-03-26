@@ -49,7 +49,7 @@ module.exports.ajouterSalarie = function (personne, salarie, callback) {
 };
 
 /*
-* Modifier un étudiant
+* Modifier un salarié
 */
 module.exports.modifierSalarie = function (numPersonne, salarie, callback) {
   // connection à la base
@@ -59,6 +59,25 @@ module.exports.modifierSalarie = function (numPersonne, salarie, callback) {
             // execution de la requête SQL
             // il est conseillé de passer la requête dans une variable
             req = "UPDATE salarie SET sal_telprof = '"+salarie.telpro+"', fon_num = "+salarie.fonction+" WHERE per_num = "+numPersonne;
+            connexion.query(req, callback);
+
+            // la connexion retourne dans le pool
+            connexion.release();
+        }
+      });
+};
+
+/*
+* Supprimer un salarié
+*/
+module.exports.deleteSalarie = function (numPersonne, callback) {
+  // connection à la base
+  db.getConnection(function(err, connexion){
+        if(!err){
+            // s'il n'y a pas d'erreur de connexion
+            // execution de la requête SQL
+            // il est conseillé de passer la requête dans une variable
+            req = "DELETE FROM salarie WHERE per_num = "+numPersonne;
             connexion.query(req, callback);
 
             // la connexion retourne dans le pool

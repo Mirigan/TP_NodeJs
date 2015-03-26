@@ -1,6 +1,8 @@
 var model = require('../models/personne.js');
 var modelSalarie = require('../models/salarie.js');
 var modelEtudiant = require('../models/etudiant.js');
+var modelCitation = require('../models/citation.js');
+var modelVote = require('../models/vote.js');
 
 //////////////////////////////////////////////// L I S T E R     P E R S O N N E S
 
@@ -359,3 +361,112 @@ module.exports.ModifierSalarieOK = function(request, response)
     response.render('modifierSalarieOK', response);
   });
 }
+
+//////////////////////////////////////////////// S U P P R I M E R     P E R S O N N E S
+
+module.exports.SupprimerPersonne = function(request, response){
+   response.title = 'Supprimer une personne';
+
+   model.getListePersonne(function(err, result){
+     if(err){
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+
+     response.listePersonne = result;
+     response.nbPersonne = result.length;
+     response.render('supprimerPersonne', response);
+   });
+};
+
+module.exports.SupprimerPersonneOK = function(request, response){
+   response.title = 'Supprimer une personne';
+
+   model.isEtudiant(request.body.numPersonne, function(err, result){ //test si étudiant ou salarié
+     if(err){
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+
+     if(typeof(result[0]) !== 'undefined')
+     {
+       var isEtudiant = true;
+     }
+     else
+     {
+       var isEtudiant = false;
+     }
+
+     if(isEtudiant){
+       modelVote.deleteVotePers(request.body.numPersonne, function(err, result){
+         if(err){
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+
+         modelEtudiant.deleteEtudiant(request.body.numPersonne, function(err, result){
+           if(err){
+             // gestion de l'erreur
+             console.log(err);
+             return;
+           }
+
+           model.deletePersonne(request.body.numPersonne, function(err, result){
+             if(err){
+               // gestion de l'erreur
+               console.log(err);
+               return;
+             }
+
+             if(result.length === 0){
+               response.supprOk = false;
+             }
+             else{
+               response.supprOk = true;
+             }
+
+             response.render('supprimerPersonneOK', response);
+          });
+        });
+       });
+     }
+     else //salarié
+     {
+       modelCitation.deleteCitationPers(request.body.numPersonne, function(err, result){
+         if(err){
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+
+         modelSalarie.deleteSalarie(request.body.numPersonne, function(err, result){
+           if(err){
+             // gestion de l'erreur
+             console.log(err);
+             return;
+           }
+
+           model.deletePersonne(request.body.numPersonne, function(err, result){
+             if(err){
+               // gestion de l'erreur
+               console.log(err);
+               return;
+             }
+
+             if(result.length === 0){
+               response.supprOk = false;
+             }
+             else{
+               response.supprOk = true;
+             }
+
+             response.render('supprimerPersonneOK', response);
+          });
+        });
+       });
+     }
+   });
+};

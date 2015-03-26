@@ -2,6 +2,9 @@
 var crypto=require('crypto');
 var db = require('../configDb');
 
+var modelSalarie = require('../models/salarie.js');
+var modelEtudiant = require('../models/etudiant.js');
+
 
 /*
 * Vérifie le nom utilisateur et son mot de passe
@@ -178,5 +181,24 @@ module.exports.modifierPersonne = function (personne, callback) {
 						// la connexion retourne dans le pool
 						connexion.release();
 				}
-			});
+	});
+};
+
+/*
+* Supprimer une personne
+*/
+module.exports.deletePersonne = function (numPersonne, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+				if(!err){
+						// s'il n'y a pas d'erreur de connexion
+						// execution de la requête SQL
+						// il est conseillé de passer la requête dans une variable
+						req = "DELETE FROM personne WHERE per_num = "+numPersonne;
+						connexion.query(req, callback);
+
+						// la connexion retourne dans le pool
+						connexion.release();
+				}
+	});
 };
