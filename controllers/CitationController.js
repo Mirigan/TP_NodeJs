@@ -113,3 +113,8 @@ module.exports.RechercherCitation = function(request, response){
      response.redirect('/');
    }
 };
+
+module.exports.RechercherCitationOk = function(request, response){
+  response.title = 'Rechercher des citations';
+
+};
