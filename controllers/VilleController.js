@@ -160,22 +160,19 @@ module.exports.SupprimerVilleOK = function(request, response){
        console.log(err);
        return;
      }
-     request.session.nomVille = result.vil_nom;
+     request.session.nomVille = result[0].vil_nom;
 
      model.deleteVille(request.body.numVille, function (err, result) {
        if (err) {
          // gestion de l'erreur
-         console.log(err);
+         response.supprOk = false;
+         response.nomVille = request.session.nomVille;
+         request.session.nomVille = null;
+         response.render('supprimerVilleOK', response);
          return;
        }
 
-       if(result.length === 0){
-         response.supprOk = false;
-       }
-       else{
-         response.supprOk = true;
-       }
-       
+       response.supprOk = true;
        response.nomVille = request.session.nomVille;
        request.session.nomVille = null;
        response.render('supprimerVilleOK', response);
