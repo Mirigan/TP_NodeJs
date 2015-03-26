@@ -16,6 +16,7 @@ module.exports = function(app){
     app.post('/ajouterCitationOk', CitationController.AjouterCitationOk);
     app.get('/rechercherCitation', CitationController.RechercherCitation);
     app.post('/rechercheCitationOk', CitationController.RechercherCitationOk);
+    app.get('/supprimerCitation', CitationController.SupprimerCitation);
 
  // villes
    app.get('/listerVille', VilleController.ListerVille);

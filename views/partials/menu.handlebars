@@ -15,7 +15,9 @@
 			{{#if session.per_login}}
 				<li><a href="/ajouterPersonne"> Ajouter </a></li>
 				<li><a href="/modifierPersonne"> Modifier </a></li>
-				<li><a href="/supprimerPersonne"> Supprimer </a></li> <!--  A CHANGER => seulement admin -->
+			{{/if}}
+			{{#if session.per_admin}}
+				<li><a href="/supprimerPersonne"> Supprimer </a></li>
 			{{/if}}
 		</ul>
 
@@ -26,6 +28,9 @@
 				<li><a href="/rechercherCitation"> Rechercher </a></li>
 				<li><a href="/ajouterCitation"> Ajouter </a></li>
 			{{/if}}
+			{{#if session.per_admin}}
+				<li><a href="/supprimerCitation"> Supprimer </a></li>
+			{{/if}}
 		</ul>
 		<p><img class="menuImage" src="/image/ville.png"  alt="Ville"/> Ville </p>
 		<ul>
@@ -33,6 +38,8 @@
 			{{#if session.per_login}}
 				<li><a href="/ajouterVille"> Ajouter </a></li>
 				<li><a href="/modifierVille"> Modifier </a></li>
+			{{/if}}
+			{{#if session.per_admin}}
 				<li><a href="/supprimerVille"> Supprimer </a></li>
 			{{/if}}
 		</ul>
