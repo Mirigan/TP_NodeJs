@@ -65,7 +65,7 @@ module.exports.ajouterVille = function (nomVille, callback) {
 };
 
 /*
-* Ajouter une ville
+* Modifier une ville
 */
 module.exports.modifierVille = function (ville, callback) {
 	// connection à la base
@@ -75,6 +75,25 @@ module.exports.modifierVille = function (ville, callback) {
 						// execution de la requête SQL
 						// il est conseillé de passer la requête dans une variable
 						req = "UPDATE ville SET vil_nom = '"+ville.nouveauNom+"' WHERE vil_num = "+ville.num;
+						connexion.query(req, callback);
+
+						// la connexion retourne dans le pool
+						connexion.release();
+				}
+			});
+};
+
+/*
+* Supprimer une ville
+*/
+module.exports.deleteVille = function (numVille, callback) {
+	// connection à la base
+	db.getConnection(function(err, connexion){
+				if(!err){
+						// s'il n'y a pas d'erreur de connexion
+						// execution de la requête SQL
+						// il est conseillé de passer la requête dans une variable
+						req = "DELETE FROM ville WHERE vil_num = "+numVille;
 						connexion.query(req, callback);
 
 						// la connexion retourne dans le pool

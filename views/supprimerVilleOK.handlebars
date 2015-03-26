@@ -1,0 +1,14 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Supprimer une ville</h1>
+
+<div>
+  {{#if supprOk}}
+    <img src="/image/valid.png"/>
+    La ville "{{nomVille}}" a été supprimée avec succès.
+  {{else}}
+    <img src="/image/erreur.png"/>
+    La ville "{{nomVille}}" n'a pas pu être supprimée...
+  {{/if}}
+</div>

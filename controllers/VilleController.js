@@ -149,3 +149,36 @@ module.exports.SupprimerVille = function(request, response){
      response.render('supprimerVille', response);
    });
 };
+
+module.exports.SupprimerVilleOK = function(request, response){
+
+   response.title = 'Supprimer une ville';
+
+   model.getVille(request.body.numVille,function(err, result){
+     if (err) {
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     request.session.nomVille = result.vil_nom;
+
+     model.deleteVille(request.body.numVille, function (err, result) {
+       if (err) {
+         // gestion de l'erreur
+         console.log(err);
+         return;
+       }
+
+       if(result.length === 0){
+         response.supprOk = false;
+       }
+       else{
+         response.supprOk = true;
+       }
+       
+       response.nomVille = request.session.nomVille;
+       request.session.nomVille = null;
+       response.render('supprimerVilleOK', response);
+     });
+   });
+};
