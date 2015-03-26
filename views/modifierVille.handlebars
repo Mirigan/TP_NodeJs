@@ -1,3 +1,27 @@
 {{> enTete}}
 {{> menu}}
+
 <h1>Modifier une ville</h1>
+
+<div>
+  <p>
+    Il y a actuellement {{nbVille}} villes enregistrées.
+  </p>
+
+  <table>
+    <tr>
+      <th>Nom</th>
+      <th>Modifier</th>
+    </tr>
+    {{#each listeVille}} <!--  parcours de listeVille -->
+      <tr>
+        <td>{{this.vil_nom}}</td>
+        <td><a href="/modifierVille2/{{this.vil_num}}" title="Cliquez pour modifier cette ville"><img src="/image/modifier.png"/></a></td>
+      </tr>
+    {{/each}}
+  </table>
+
+  <p>
+    Choisissez la ville à modifier.
+  </p>
+</div>

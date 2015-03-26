@@ -1,5 +1,6 @@
 var model = require('../models/ville.js');
 
+
 //////////////////////////////////////////////// L I S T E R     V I L L E S
 
 /*
@@ -73,5 +74,60 @@ module.exports.InsertVille = function(request, response){
 module.exports.ModifierVille = function(request, response){
 
    response.title = 'Modifier une ville';
-   response.render('modifierVille', response);
+
+   model.getListeVille( function (err, result) {
+     if (err) {
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     response.listeVille = result;
+     response.nbVille = result.length;
+     response.render('modifierVille', response);
+   });
+};
+
+module.exports.ModifierVille2 = function(request, response){
+
+   response.title = 'Modifier une ville';
+
+   request.session.ville = new Object();
+   request.session.ville.num = request.params.numVille;
+
+   model.getVille(request.session.ville.num, function (err, result) {
+     if (err) {
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+     response.ville = result[0];
+     request.session.ville.ancienNom = response.ville.vil_nom;
+     response.render('modifierVille2', response);
+   });
+};
+
+module.exports.ModifierVilleOK = function(request, response){
+
+   response.title = 'Modifier une ville';
+   request.session.ville.nouveauNom = request.body.nom;
+
+   model.modifierVille(request.session.ville, function (err, result) {
+     if (err) {
+       // gestion de l'erreur
+       console.log(err);
+       return;
+     }
+
+     if(result.length === 0){
+       response.modifOk = false;
+     }
+     else{
+       response.modifOk = true;
+       response.ancienNom = request.session.ville.ancienNom;
+       response.nouveauNom = request.session.ville.nouveauNom;
+     }
+
+     request.session.ville = null;
+     response.render('modifierVilleOK', response);
+   });
 };

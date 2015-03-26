@@ -1,0 +1,14 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Modifier une ville</h1>
+
+<p>
+  {{#if modifOk}}
+    <img src="/image/valid.png"/>
+    La ville "<b>{{ancienNom}}</b>" se nomme désormais "<b>{{nouveauNom}}</b>".
+  {{else}}
+    <img src="/image/erreur.png"/>
+    La ville "<b>{{ancienNom}}</b>" n'a pas pu être modifiée...
+  {{/if}}
+</p>

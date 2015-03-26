@@ -22,6 +22,8 @@ module.exports = function(app){
    app.get('/ajouterVille', VilleController.AjouterVille);
    app.post('/ajouterVilleOK', VilleController.AjouterVilleOK);
    app.get('/modifierVille', VilleController.ModifierVille);
+   app.get('/modifierVille2/:numVille', VilleController.ModifierVille2);
+   app.post('/modifierVilleOK', VilleController.ModifierVilleOK);
 
 // connection
    app.get('/connect', ConnectController.Connect);

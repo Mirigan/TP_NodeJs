@@ -1,0 +1,13 @@
+{{> enTete}}
+{{> menu}}
+
+<h1>Modifier une ville</h1>
+
+<form method="POST" action="/modifierVilleOK">
+  <fieldset>
+    <label for="nom">Nouveau nom : </label>
+    <input type="text" name="nom" value="{{ville.vil_nom}}" required/>
+  </fieldset>
+
+  <input type="submit" value="Valider"/>
+</form>
