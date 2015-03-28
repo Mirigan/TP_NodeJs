@@ -78,6 +78,25 @@ module.exports.getListePersonneDepCitValide = function(callback){
 };
 
 /*
+* Obtenir les numéros de citations d'une personne
+*/
+module.exports.getCitationPers = function (numPersonne, callback) {
+  // connection à la base
+  db.getConnection(function(err, connexion){
+        if(!err){
+            // s'il n'y a pas d'erreur de connexion
+            // execution de la requête SQL
+            // il est conseillé de passer la requête dans une variable
+            req = "SELECT cit_num FROM citation WHERE per_num = "+numPersonne;
+            connexion.query(req, callback);
+
+            // la connexion retourne dans le pool
+            connexion.release();
+        }
+      });
+};
+
+/*
 * Supprimer les citations d'une personne
 */
 module.exports.deleteCitationPers = function (numPersonne, callback) {

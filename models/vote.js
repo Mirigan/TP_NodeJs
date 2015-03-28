@@ -35,3 +35,22 @@ module.exports.deleteVotePers = function (numPersonne, callback) {
         }
       });
 };
+
+/*
+* Supprimer les votes sur une citation
+*/
+module.exports.deleteVoteCitation = function (numCitation, callback) {
+  // connection à la base
+  db.getConnection(function(err, connexion){
+        if(!err){
+            // s'il n'y a pas d'erreur de connexion
+            // execution de la requête SQL
+            // il est conseillé de passer la requête dans une variable
+            req = "DELETE FROM vote WHERE cit_num = "+numCitation;
+            connexion.query(req, callback);
+
+            // la connexion retourne dans le pool
+            connexion.release();
+        }
+      });
+};

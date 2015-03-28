@@ -4,6 +4,7 @@ var modelEtudiant = require('../models/etudiant.js');
 var modelCitation = require('../models/citation.js');
 var modelVote = require('../models/vote.js');
 
+
 //////////////////////////////////////////////// L I S T E R     P E R S O N N E S
 
 module.exports.ListerPersonne = function(request, response){
@@ -22,11 +23,13 @@ module.exports.ListerPersonne = function(request, response){
    });
 };
 
-//////////////////////////////////////////////// A J O U T E R     P E R S O N N E S
+
+//////////////////////////////////////////////// A J O U T E R     P E R S O N N E
 
 module.exports.AjouterPersonne = function(request, response){
    response.title = 'Ajout des personnes';
 
+   // Seules les personnes connectées peuvent ajouter une personne
    if (request.session.per_login){
      response.render('ajouterPersonne', response);
    }//fin si login
@@ -38,6 +41,7 @@ module.exports.AjouterPersonne = function(request, response){
 module.exports.AjouterPersonneOK = function(request, response){
    response.title = 'Ajout des personnes';
 
+   // Seules les personnes connectées peuvent ajouter une personne
    if (request.session.per_login){
      // Récupération des informations générales sur la personne
      request.session.personne = new Object();
@@ -50,7 +54,7 @@ module.exports.AjouterPersonneOK = function(request, response){
      request.session.personne.categorie = request.body.categorie;
 
      // Redirection en fonction de la catégorie
-     if(request.body.categorie == 'etudiant')
+     if(request.body.categorie == 'etudiant') //étudiant
      {
        modelEtudiant.getListeAnnee( function (err, result) {
          if (err) {
@@ -70,7 +74,7 @@ module.exports.AjouterPersonneOK = function(request, response){
          });
        });
      }
-     else
+     else //salarié
      {
        modelSalarie.getListeFonction( function (err, result) {
          if (err) {
@@ -92,6 +96,7 @@ module.exports.AjouterEtudiantOK = function(request, response)
 {
   response.title = 'Ajout d\'un étudiant';
 
+  // Seules les personnes connectées peuvent ajouter un étudiant
   if (request.session.per_login){
     // Récupération des informations sur l'étudiant
     request.session.etudiant = new Object();
@@ -102,18 +107,16 @@ module.exports.AjouterEtudiantOK = function(request, response)
       if(err){
         // gestion de l'erreur
         console.log(err);
-        return;
-      }
-
-      if(result.length === 0){
         response.ajoutOk = false;
       }
-      else{
+      else //si pas d'erreur
+      {
         response.ajoutOK = true;
-        response.nom = request.session.personne.nom;
-        response.prenom = request.session.personne.prenom;
       }
 
+      response.nom = request.session.personne.nom;
+      response.prenom = request.session.personne.prenom;
+      // On vide les variables de session
       request.session.personne = null;
       request.session.etudiant = null;
       response.render('ajouterEtudiantOK', response);
@@ -128,6 +131,7 @@ module.exports.AjouterSalarieOK = function(request, response)
 {
   response.title = 'Ajout d\'un salarié';
 
+  // Seules les personnes connectées peuvent ajouter un salarié
   if (request.session.per_login){
     // Récupération des informations sur le salarié
     request.session.salarie = new Object();
@@ -138,18 +142,15 @@ module.exports.AjouterSalarieOK = function(request, response)
       if(err){
         // gestion de l'erreur
         console.log(err);
-        return;
-      }
-
-      if(result.length === 0){
         response.ajoutOk = false;
       }
-      else{
+      else{ //si pas d'erreur
         response.ajoutOK = true;
-        response.nom = request.session.personne.nom;
-        response.prenom = request.session.personne.prenom;
       }
 
+      response.nom = request.session.personne.nom;
+      response.prenom = request.session.personne.prenom;
+      // On vide les variables de session
       request.session.personne = null;
       request.session.salarie = null;
       response.render('ajouterSalarieOK', response);
@@ -160,7 +161,7 @@ module.exports.AjouterSalarieOK = function(request, response)
   }
 }
 
-//////////////////////////////////////////////// A J O U T E R     P E R S O N N E S
+//////////////////////////////////////////////// D E T A I L S     P E R S O N N E
 
 module.exports.DetailsPersonne = function(request, response){
 
@@ -173,7 +174,7 @@ module.exports.DetailsPersonne = function(request, response){
       return;
     }
 
-    if(typeof(result[0]) !== 'undefined')
+    if(typeof(result[0]) !== 'undefined') //étudiant
     {
       model.getEtudiant(numPersonne, function(err, result){
         if(err){
@@ -186,7 +187,7 @@ module.exports.DetailsPersonne = function(request, response){
         response.render('detailsEtudiant', response);
       });
     }
-    else
+    else //salarié
     {
       model.getSalarie(numPersonne, function(err, result){
         if(err){
@@ -202,11 +203,13 @@ module.exports.DetailsPersonne = function(request, response){
   });
 };
 
-//////////////////////////////////////////////// M O D I F I E R     P E R S O N N E S
+//////////////////////////////////////////////// M O D I F I E R     P E R S O N N E
 
 module.exports.ModifierPersonne = function(request, response){
    response.title = 'Modifier une personne';
-   if (request.session.per_admin){
+
+   // Seules les personnes connectées peuvent modifier une personne
+   if (request.session.per_login){
      model.getListePersonne(function(err, result){
        if(err){
          // gestion de l'erreur
@@ -227,7 +230,8 @@ module.exports.ModifierPersonne = function(request, response){
 module.exports.ModifierPersonne2 = function(request, response){
    response.title = 'Modifier une personne';
 
-   if (request.session.per_admin){
+   // Seules les personnes connectées peuvent modifier une personne
+   if (request.session.per_login){
      request.session.personne = new Object();
      request.session.personne.num = request.params.numPersonne;
 
@@ -246,11 +250,11 @@ module.exports.ModifierPersonne2 = function(request, response){
            return;
          }
 
-         if(typeof(result[0]) !== 'undefined')
+         if(typeof(result[0]) !== 'undefined') //étudiant
          {
            response.isEtudiant = true;
          }
-         else
+         else //salarié
          {
            response.isEtudiant = false;
          }
@@ -268,7 +272,8 @@ module.exports.ModifierPersonne2 = function(request, response){
 module.exports.ModifierPersonneOK = function(request, response){
    response.title = 'Modifier une personne';
 
-   if (request.session.per_admin){
+   // Seules les personnes connectées peuvent modifier une personne
+   if (request.session.per_login){
 
      // Récupération des informations générales sur la personne
      request.session.personne.nom = request.body.nom;
@@ -278,6 +283,7 @@ module.exports.ModifierPersonneOK = function(request, response){
      request.session.personne.login = request.body.login;
      request.session.personne.mdp = request.body.mdp;
 
+     // Modification des informations générales sur la personne
      model.modifierPersonne(request.session.personne, function(err, result){
        if(err){
          // gestion de l'erreur
@@ -301,6 +307,7 @@ module.exports.ModifierPersonneOK = function(request, response){
                return;
              }
              response.listeDepartement = result;
+             // On vide les variables de session
              request.session.personne.isEtudiant = null;
              response.render('modifierEtudiant', response);
            });
@@ -324,6 +331,7 @@ module.exports.ModifierPersonneOK = function(request, response){
                return;
              }
              response.listeFonction = result;
+             // On vide les variables de session
              request.session.personne.isEtudiant = null;
              response.render('modifierSalarie', response);
            });
@@ -340,29 +348,28 @@ module.exports.ModifierEtudiantOK = function(request, response)
 {
   response.title = 'Modifier un étudiant';
 
-  if (request.session.per_admin){
+  // Seules les personnes connectées peuvent modifier un étudiant
+  if (request.session.per_login){
 
     // Récupération des informations sur l'étudiant
     request.session.etudiant = new Object();
     request.session.etudiant.annee = request.body.annee;
     request.session.etudiant.departement = request.body.departement;
 
+    // Modification des informations sur l'étudiant
     modelEtudiant.modifierEtudiant(request.session.personne.num, request.session.etudiant, function(err, result){
       if(err){
         // gestion de l'erreur
         console.log(err);
-        return;
-      }
-
-      if(result.length === 0){
         response.modifOk = false;
       }
-      else{
+      else{ //pas d'erreur
         response.modifOk = true;
-        response.nom = request.session.personne.nom;
-        response.prenom = request.session.personne.prenom;
       }
 
+      response.nom = request.session.personne.nom;
+      response.prenom = request.session.personne.prenom;
+      // On vide les variables de session
       request.session.personne = null;
       request.session.etudiant = null;
       response.render('modifierEtudiantOK', response);
@@ -377,29 +384,28 @@ module.exports.ModifierSalarieOK = function(request, response)
 {
   response.title = 'Modifier un salarié';
 
-  if (request.session.per_admin){
+  // Seules les personnes connectées peuvent modifier un salarié
+  if (request.session.per_login){
 
     // Récupération des informations sur l'étudiant
     request.session.salarie = new Object();
     request.session.salarie.telpro = request.body.telpro;
     request.session.salarie.fonction = request.body.fonction;
 
+    // Modification des informations sur le salarié
     modelSalarie.modifierSalarie(request.session.personne.num, request.session.salarie, function(err, result){
       if(err){
         // gestion de l'erreur
         console.log(err);
-        return;
-      }
-
-      if(result.length === 0){
         response.modifOk = false;
       }
       else{
         response.modifOk = true;
-        response.nom = request.session.personne.nom;
-        response.prenom = request.session.personne.prenom;
       }
 
+      response.nom = request.session.personne.nom;
+      response.prenom = request.session.personne.prenom;
+      // On vide les variables de session
       request.session.personne = null;
       request.session.salarie = null;
       response.render('modifierSalarieOK', response);
@@ -410,11 +416,12 @@ module.exports.ModifierSalarieOK = function(request, response)
   }
 }
 
-//////////////////////////////////////////////// S U P P R I M E R     P E R S O N N E S
+//////////////////////////////////////////////// S U P P R I M E R     P E R S O N N E
 
 module.exports.SupprimerPersonne = function(request, response){
    response.title = 'Supprimer une personne';
 
+   // Seul l'admin peut supprimer une personne
    if (request.session.per_admin){
      model.getListePersonne(function(err, result){
        if(err){
@@ -436,90 +443,137 @@ module.exports.SupprimerPersonne = function(request, response){
 module.exports.SupprimerPersonneOK = function(request, response){
    response.title = 'Supprimer une personne';
 
-   model.isEtudiant(request.body.numPersonne, function(err, result){ //test si étudiant ou salarié
-     if(err){
-       // gestion de l'erreur
-       console.log(err);
-       return;
-     }
+   // Seul l'admin peut supprimer une personne
+   if (request.session.per_admin){
 
-     if(typeof(result[0]) !== 'undefined')
-     {
-       var isEtudiant = true;
-     }
-     else
-     {
-       var isEtudiant = false;
-     }
+     model.getPersonne(request.body.numPersonne, function(err, result){
+       if(err){
+         // gestion de l'erreur
+         console.log(err);
+         return;
+       }
 
-     if(isEtudiant){
-       modelVote.deleteVotePers(request.body.numPersonne, function(err, result){
+       request.session.personne = new Object();
+       request.session.personne.prenom = result[0].per_prenom;
+       request.session.personne.nom = result[0].per_nom;
+
+       model.isEtudiant(request.body.numPersonne, function(err, result){ //test si étudiant ou salarié
          if(err){
            // gestion de l'erreur
            console.log(err);
            return;
          }
 
-         modelEtudiant.deleteEtudiant(request.body.numPersonne, function(err, result){
-           if(err){
-             // gestion de l'erreur
-             console.log(err);
-             return;
-           }
-
-           model.deletePersonne(request.body.numPersonne, function(err, result){
-             if(err){
-               // gestion de l'erreur
-               console.log(err);
-               return;
-             }
-
-             if(result.length === 0){
-               response.supprOk = false;
-             }
-             else{
-               response.supprOk = true;
-             }
-
-             response.render('supprimerPersonneOK', response);
-          });
-        });
-       });
-     }
-     else //salarié
-     {
-       modelCitation.deleteCitationPers(request.body.numPersonne, function(err, result){
-         if(err){
-           // gestion de l'erreur
-           console.log(err);
-           return;
+         if(typeof(result[0]) !== 'undefined') //étudiant
+         {
+           var isEtudiant = true;
+         }
+         else //salarié
+         {
+           var isEtudiant = false;
          }
 
-         modelSalarie.deleteSalarie(request.body.numPersonne, function(err, result){
-           if(err){
-             // gestion de l'erreur
-             console.log(err);
-             return;
-           }
-
-           model.deletePersonne(request.body.numPersonne, function(err, result){
+         if(isEtudiant){ //étudiant
+           // On supprime tous ses votes
+           modelVote.deleteVotePers(request.body.numPersonne, function(err, result){
              if(err){
                // gestion de l'erreur
                console.log(err);
                return;
              }
 
-             if(result.length === 0){
-               response.supprOk = false;
-             }
-             else{
-               response.supprOk = true;
+             // On supprime l'étudiant
+             modelEtudiant.deleteEtudiant(request.body.numPersonne, function(err, result){
+               if(err){
+                 // gestion de l'erreur
+                 console.log(err);
+                 return;
+               }
+
+               // On supprime la personne
+               model.deletePersonne(request.body.numPersonne, function(err, result){
+                 if(err){
+                   // gestion de l'erreur
+                   console.log(err);
+                   response.supprOk = false;
+                 }
+                 else{ //pas d'erreur
+                   response.supprOk = true;
+                 }
+
+                 response.prenom = request.session.personne.prenom;
+                 response.nom = request.session.personne.nom;
+                 // On vide les variables de session
+                 request.session.personne = null;
+                 response.render('supprimerPersonneOK', response);
+              });
+            });
+           });
+         }
+         else //salarié
+         {
+           // On récupère le numéro de toutes ses citations
+           modelCitation.getCitationPers(request.body.numPersonne, function(err, result){
+             if(err){
+               // gestion de l'erreur
+               console.log(err);
+               return;
              }
 
-             response.render('supprimerPersonneOK', response);
-          });
-        });
+             var i;
+             for(i=0; i<result.length; i++)
+             {
+               // On supprime les votes sur les citations de la personne
+               modelVote.deleteVoteCitation(result[i].cit_num, function(err, result){
+                 if(err){
+                   // gestion de l'erreur
+                   console.log(err);
+                   return;
+                 }
+               })
+             }
+
+             // On supprime les citations de la personne
+             modelCitation.deleteCitationPers(request.body.numPersonne, function(err, result){
+               if(err){
+                 // gestion de l'erreur
+                 console.log(err);
+                 return;
+               }
+
+               // On supprime le salarié
+               modelSalarie.deleteSalarie(request.body.numPersonne, function(err, result){
+                 if(err){
+                   // gestion de l'erreur
+                   console.log(err);
+                   return;
+                 }
+
+                 // On supprime la personne
+                 model.deletePersonne(request.body.numPersonne, function(err, result){
+                   if(err){
+                     // gestion de l'erreur
+                     console.log(err);
+                     response.supprOk = false;
+                   }
+                   else{
+                     response.supprOk = true;
+                   }
+
+                   response.prenom = request.session.personne.prenom;
+                   response.nom = request.session.personne.nom;
+                   // On vide les variables de session
+                   request.session.personne = null;
+                   response.render('supprimerPersonneOK', response);
+                    });
+                  });
+               });
+           });
+         }
        });
-     }
-   });
+    });
+   }//fin si login
+   else{
+     response.redirect('/');
+   }
 };
