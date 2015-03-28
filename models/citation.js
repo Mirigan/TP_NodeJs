@@ -20,6 +20,31 @@ module.exports.getListeCitation = function (callback){
   });
 };
 
+module.exports.getListeCitationNonValide = function (callback) {
+
+  db.getConnection(function (err, connexion) {
+    if (!err) {
+      connexion.query("SELECT cit_num, per_nom, per_prenom, cit_libelle, DATE_FORMAT(cit_date, '%d/%m/%Y') AS cit_date FROM citation c JOIN personne p ON c.per_num = p.per_num WHERE cit_valide = 0", callback);
+
+      connexion.release();
+    }
+  });
+};
+
+
+// permet de valider une citation
+module.exports.citationValidee = function (id, callback) {
+  db.getConnection(function(err, connexion) {
+    if(!err){
+      var date = new Date();
+      var dateValide = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+
+      connexion.query('UPDATE citation SET cit_valide = 1, cit_date_valide = '+dateValide+' per_num_valide = '+request.session.per_num_co+' WHERE cit_num='+id, callback);
+      connexion.release();
+    }
+  });
+};
+
 /**
 * fonction d'insertion d'une citation
 */

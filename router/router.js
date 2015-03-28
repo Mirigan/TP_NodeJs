@@ -17,8 +17,8 @@ module.exports = function(app){
     app.get('/rechercherCitation', CitationController.RechercherCitation);
     app.post('/rechercheCitationOk', CitationController.RechercherCitationOk);
     //app.get('/supprimerCitation', CitationController.SupprimerCitation);
-    //app.get('/validerCitation', CitationController.ValiderCitation);
-    //app.get('/validerCitationOk/:id', CitationController.ValiderCitationOk);
+    app.get('/validerCitation', CitationController.ValiderCitation);
+    app.get('/validerCitationOk/:id', CitationController.ValiderCitationOk);
     app.get('/noterCitation/:id', CitationController.NoterCitation);
     app.post('/noterCitationOk/:id', CitationController.NoterCitationOk);
 

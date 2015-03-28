@@ -9,41 +9,35 @@ var model_m = require('../models/mot.js');
 // ////////////////////////////////////////////// L I S T E R     C I T A T I O N
 
 module.exports.ListerCitation = function (request, response) {
-    response.title = 'Liste des citations';
+  response.title = 'Liste des citations';
 
-    if (request.session.per_login){
-      model.getListeCitation(function (err, result) {
-          if (err) {
-              console.log(err);
-              return;
-          }
-
-          model_v.getListeVote(function (err, result2) {
-              if (err) {
-                  console.log(err);
-                  return;
-              }
-
-              for (var I = 0; I < result.length; I++) {
-                  result[I].estNotable = true;
-                  for (var J = 0; J < result2.length; J++) {
-                      if (result[I].cit_num == result2[J].cit_num && result2[J].per_num == request.session.per_num_co) {
-                          result[I].estNotable = false;
-                      }
-                  }
-              }
-
-              response.listeCitation = result;
-              response.nbCitation = result.length;
-
-              response.render('listerCitation', response);
-          });
-      });
-    }//fin si login
-
-    else{
-      response.redirect('/');
+  model.getListeCitation(function (err, result) {
+    if (err) {
+        console.log(err);
+        return;
     }
+
+    model_v.getListeVote(function (err, result2) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      for (var I = 0; I < result.length; I++) {
+        result[I].estNotable = true;
+        for (var J = 0; J < result2.length; J++) {
+            if (result[I].cit_num == result2[J].cit_num && result2[J].per_num == request.session.per_num_co) {
+                result[I].estNotable = false;
+            }
+        }
+      }
+
+      response.listeCitation = result;
+      response.nbCitation = result.length;
+
+      response.render('listerCitation', response);
+    });
+  });
 };
 
 
@@ -113,7 +107,8 @@ module.exports.AjouterCitationOk = function(request, response){
 
       } else {
           var dateAnglaise = request.body.date;
-          var membres = dateAnglaiajouterCitationOkse.split('/');
+          var date = new Date();
+          var membres = dateAnglaise.split('/');
           dateAnglaise = new Date(membres[2],membres[1],membres[0]);
           data = {
               per_num: parseInt(request.body.selectEnseignant),
@@ -122,7 +117,8 @@ module.exports.AjouterCitationOk = function(request, response){
               cit_libelle: request.body.citation,
               cit_date: dateAnglaise,
               cit_valide: 0,
-              cit_date_valide: null
+              cit_date_valide: null,
+              cit_date_depo : date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
 
           };
           console.log(data);
@@ -229,6 +225,54 @@ module.exports.NoterCitationOk = function (request, response) {
             return;
         }
         response.render('noterCitationOk', response);
+    });
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
+};
+
+///////////////////// Validation d'une citation
+module.exports.ValiderCitation = function (request, response) {
+  response.title = 'Valider une citation';
+
+  if (request.session.per_admin){
+    model.getListeCitationNonValide(function (err, result) {
+      if (err) {
+          console.log(err);
+          return;
+      }
+      response.listeCitation = result;
+      response.nbCitation = result.length;
+      response.render('listerCitationNonValide', response);
+    });
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
+};
+
+module.exports.ValiderCitationOk = function (request, response) {
+  response.title = 'Valider une citation';
+
+  if (request.session.per_admin){
+    var id = parseInt(request.param("id"));
+    model.citationValidee(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
+
+
+    model.getListeCitationNonValide(function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        response.listeCitation = result;
+        response.nbCitation = result.length;
+        response.render('validerCitationOk', response);
     });
   }//fin si login
   else{

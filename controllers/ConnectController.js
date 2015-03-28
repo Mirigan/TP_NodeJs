@@ -40,7 +40,7 @@ module.exports.VerifConnect = function(request, response){
 		}
 		else
 		{
-      date = new Date();
+
       request.session.per_login = result[0].per_login;
       request.session.per_num_co = result[0].per_num;
       if (result[0].per_admin == 1){
