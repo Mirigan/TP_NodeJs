@@ -233,36 +233,103 @@ module.exports.ModifierPersonne2 = function(request, response){
    // Seules les personnes connectées peuvent modifier une personne
    if (request.session.per_login){
      request.session.personne = new Object();
-     request.session.personne.num = request.params.numPersonne;
+     request.session.personne.num = request.params.numPersonne; //numéro de la personne à modifier
 
-     model.getPersonne(request.params.numPersonne, function(err, result){
-       if(err){
-         // gestion de l'erreur
-         console.log(err);
-         return;
-       }
-       response.personne = result[0];
+     if(!request.session.per_admin){
+       response.render('modifierPersonne2', response);
+     }
+     else{
+       response.connexionOk = true;
 
-       model.isEtudiant(request.params.numPersonne, function(err, result){
+       model.getPersonne(request.session.personne.num, function(err, result){
          if(err){
            // gestion de l'erreur
            console.log(err);
            return;
          }
+         response.personne = result[0];
 
-         if(typeof(result[0]) !== 'undefined') //étudiant
-         {
-           response.isEtudiant = true;
-         }
-         else //salarié
-         {
-           response.isEtudiant = false;
-         }
+         model.isEtudiant(request.session.personne.num, function(err, result){
+           if(err){
+             // gestion de l'erreur
+             console.log(err);
+             return;
+           }
 
-         request.session.personne.isEtudiant = response.isEtudiant;
-         response.render('modifierPersonne2', response);
+           if(typeof(result[0]) !== 'undefined') //étudiant
+           {
+             response.isEtudiant = true;
+           }
+           else //salarié
+           {
+             response.isEtudiant = false;
+           }
+
+           request.session.personne.isEtudiant = response.isEtudiant;
+           response.render('modifierPersonne3', response);
+         });
        });
-     });
+     }
+   }//fin si login
+   else{
+     response.redirect('/');
+   }
+};
+
+module.exports.ModifierPersonne3 = function(request, response){
+   response.title = 'Modifier une personne';
+
+   // Seules les personnes connectées peuvent modifier une personne
+   if (request.session.per_login){
+     //Authentification de la personne
+     var data = {login:request.body.login, pass:request.body.pass};
+     model.getLoginOk(data,function(err, result){
+       if (err) {
+           // gestion de l'erreur
+           console.log(err);
+           return;
+       }
+
+       if(result.length === 0)
+       {
+         console.log('mot de passe ou login non valide');
+         response.connexionOk = false;
+         request.session.personne = null;
+       }
+       else
+       {
+         response.connexionOk = true;
+
+         model.getPersonne(request.session.personne.num, function(err, result){
+           if(err){
+             // gestion de l'erreur
+             console.log(err);
+             return;
+           }
+           response.personne = result[0];
+
+           model.isEtudiant(request.session.personne.num, function(err, result){
+             if(err){
+               // gestion de l'erreur
+               console.log(err);
+               return;
+             }
+
+             if(typeof(result[0]) !== 'undefined') //étudiant
+             {
+               response.isEtudiant = true;
+             }
+             else //salarié
+             {
+               response.isEtudiant = false;
+             }
+
+             request.session.personne.isEtudiant = response.isEtudiant;
+             response.render('modifierPersonne3', response);
+           });
+         });
+       }
+    });
    }//fin si login
    else{
      response.redirect('/');

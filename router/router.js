@@ -39,6 +39,7 @@ module.exports = function(app){
   app.post('/supprimerPersonneOK', PersonneController.SupprimerPersonneOK);
   app.get('/modifierPersonne', PersonneController.ModifierPersonne);
   app.get('/modifierPersonne2/:numPersonne', PersonneController.ModifierPersonne2);
+  app.post('/modifierPersonne3', PersonneController.ModifierPersonne3);
   app.post('/modifierPersonneOK', PersonneController.ModifierPersonneOK);
   app.post('/modifierEtudiantOK', PersonneController.ModifierEtudiantOK);
   app.post('/modifierSalarieOK', PersonneController.ModifierSalarieOK);

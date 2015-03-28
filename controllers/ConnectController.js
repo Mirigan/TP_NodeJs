@@ -56,6 +56,7 @@ module.exports.VerifConnect = function(request, response){
 module.exports.Deconnect = function(request, response){
   if(request.session.per_login != null){
     request.session.per_login = null;
+    request.session.per_admin = null;
 
     response.render('deconnection', response);
   }

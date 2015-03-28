@@ -1,43 +1,16 @@
 {{> enTete}}
 {{> menu}}
-
 <h1>Modifier une personne</h1>
 
-<form id="modifierPersonne" method="POST" action="/modifierPersonneOK">
+<form method="post" action="/modifierPersonne3">
   <fieldset>
-    <label for="nom">Nom : </label>
-    <input type="text" name="nom" value="{{personne.per_nom}}"/>
-    <br/>
-
-    <label for="prenom">Prénom : </label>
-    <input type="text" name="prenom" value="{{personne.per_prenom}}"/>
-    <br/>
-
-    <label for="tel">Téléphone : </label>
-    <input type="text" name="tel" pattern="0[1-9][0-9]{8}" maxlength="10" value="{{personne.per_tel}}"/>
-    <br/>
-
-    <label for="mail">Mail : </label>
-    <input type="mail" name="mail" value="{{personne.per_mail}}"/>
-    <br/>
-
-    <label for="login">Login : </label>
-    <input type="text" name="login" maxlength="20" value="{{personne.per_login}}"/>
-    <br/>
-
-    <label for="mdp">Mot de passe : </label>
-    <input type="password" name="mdp" maxlength="20" required/>
-    <br/>
-
-    <label for="categorie">Catégorie : </label>
-    {{#if isEtudiant}}
-      <span>Etudiant</span>
-    {{else}}
-      <span>Personnel</span>
-    {{/if}}
-
-    <br/>
+    <legend>Authentification</legend>
+    <label for="login">Nom de l'utilisateur : </label>
+    <input id="login" name="login" type="text"/>
+    </br>
+    <label for="pass">Mot de passe : </label>
+    <input id="pass" name="pass" type="password"/>
+  </br>
   </fieldset>
-
   <input type="submit" value="Valider"/>
 </form>
