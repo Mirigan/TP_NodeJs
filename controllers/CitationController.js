@@ -279,3 +279,64 @@ module.exports.ValiderCitationOk = function (request, response) {
     response.redirect('/');
   }
 };
+
+////////////////// Suppression d'une citation
+module.exports.SupprimerCitation = function (request, response) {
+  response.title = 'Suppression  d\'une citation';
+
+  if (request.session.per_admin){
+
+    model.getAllCitation( function(err, result){
+      if (err) {
+        // gestion de l'erreur
+        console.log(err);
+        return;
+      }
+      response.listeCitation = result;
+      response.nbCitation = result.length;
+
+      response.render('supprimerCitation', response);
+    });
+
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
+};
+
+module.exports.SupprimerCitationOk = function (request, response) {
+  response.title = 'Suppression  d\'une citation';
+
+  if (request.session.per_admin){
+    var id = parseInt(request.param("id"));
+    model.supprimerCitation(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
+
+    model_v.deleteVoteCitation(id, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
+
+    model.getAllCitation( function(err, result){
+      if (err) {
+        // gestion de l'erreur
+        console.log(err);
+        return;
+      }
+      response.listeCitation = result;
+      response.nbCitation = result.length;
+
+      response.render('supprimerCitationOk', response);
+    });
+
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
+};
