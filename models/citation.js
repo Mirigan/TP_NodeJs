@@ -10,7 +10,7 @@ module.exports.getListeCitation = function (callback){
       req += " from citation c"
       req += " inner join vote v on c.cit_num = v.cit_num"
       req += " inner join personne p on c.per_num = p.per_num"
-      req += " where cit_valide = 1 and cit_date_valide is not null"
+      req += " where cit_valide = 1"
       req += " group by c.cit_num, per_nom, cit_libelle, cit_date ";
       connexion.query(req, callback);
 
@@ -74,8 +74,8 @@ module.exports.getListeDateCitation = function(callback){
       // s'il n'y a pas d'erreur de connexion
       // execution de la requête SQL
       var req = "SELECT distinct date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c ";
-      req += " where cit_valide = 1 AND cit_date_valide is not null"
-      connexion.query(req, date, callback);
+      req += " where cit_valide = 1"
+      connexion.query(req, callback);
 
       //la connexion retourne dans le pool
       connexion.release();
@@ -92,8 +92,8 @@ module.exports.getListePersonneDepCitValide = function(callback){
       // execution de la requête SQL
       var req = "SELECT distinct p.per_num, per_nom FROM personne p ";
       req += " inner join citation c on c.per_num = p.per_num";
-      req += " where cit_valide = 1 AND cit_date_valide is not null"
-      connexion.query(req, date, callback);
+      req += " where cit_valide = 1"
+      connexion.query(req, callback);
 
       //la connexion retourne dans le pool
       connexion.release();
@@ -127,15 +127,15 @@ module.exports.getCitationPers = function (numPersonne, callback) {
 module.exports.deleteCitationPers = function (numPersonne, callback) {
   // connection à la base
   db.getConnection(function(err, connexion){
-        if(!err){
-            // s'il n'y a pas d'erreur de connexion
-            // execution de la requête SQL
-            // il est conseillé de passer la requête dans une variable
-            req = "DELETE FROM citation WHERE per_num = "+numPersonne;
-            connexion.query(req, callback);
+    if(!err){
+        // s'il n'y a pas d'erreur de connexion
+        // execution de la requête SQL
+        // il est conseillé de passer la requête dans une variable
+        req = "DELETE FROM citation WHERE per_num = "+numPersonne;
+        connexion.query(req, callback);
 
-            // la connexion retourne dans le pool
-            connexion.release();
-        }
-      });
+        // la connexion retourne dans le pool
+        connexion.release();
+    }
+  });
 };

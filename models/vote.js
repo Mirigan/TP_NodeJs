@@ -12,6 +12,18 @@ module.exports.getListeVote = function (callback) {
     });
 };
 
+module.exports.getNote= function (callback) {
+
+    db.getConnection(function (err, connexion) {
+        if (!err) {
+            connexion.query("SELECT distinct vot_valeur FROM vote", callback);
+
+            connexion.release();
+        }
+    });
+};
+
+
 /// permet de mettre une note a une citation
 module.exports.noteCitation = function (data, callback) {
     db.getConnection(function(err, connexion) {
