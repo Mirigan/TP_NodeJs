@@ -1,6 +1,15 @@
 {{> enTete}}
 {{> menu}}
 
+<script language="JavaScript">
+  <!-- //masquer pour les vieux navigateurs
+  function validationSuppr()
+  {
+    return confirm('Souhaitez-vous vraiment supprimer cette personne ?');
+  }
+  //-->
+</script>
+
 <h1>Supprimer une personne</h1>
 
 <div>
@@ -8,7 +17,7 @@
     Il y a actuellement {{nbPersonne}} personnes enregistrées.
   </p>
 
-  <form method="POST" action="/supprimerPersonneOK">
+  <form method="POST" action="/supprimerPersonneOK" onSubmit="return validationSuppr();">
     <fieldset>
       <legend>Sélectionnez la personne à supprimer</legend>
 
