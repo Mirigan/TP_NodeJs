@@ -1,20 +1,25 @@
 var db = require('../configDb');
 
-module.exports.getNote = function (callback){
-  // connection à la base
-  db.getConnection(function(err, connexion){
-    if(!err){
-      // s'il n'y a pas d'erreur de connexion
-      // execution de la requête SQL
-      var req = "SELECT vot_valeur "
-      req += " from vote v inner join"
-      req += " citation c on c.cit_num = v.cit_num ";
-      connexion.query(req, callback);
+/// permet d'obtenir la liste des votes
+module.exports.getListeVote = function (callback) {
 
-      //la connexion retourne dans le pool
-      connexion.release();
+    db.getConnection(function (err, connexion) {
+        if (!err) {
+            connexion.query("SELECT cit_num, per_num, vot_valeur FROM vote", callback);
+
+            connexion.release();
+        }
+    });
+};
+
+/// permet de mettre une note a une citation
+module.exports.noteCitation = function (data, callback) {
+    db.getConnection(function(err, connexion) {
+        if(!err){
+            connexion.query('INSERT INTO vote SET ? ', data, callback);
+            connexion.release();
     }
-  });
+    });
 };
 
 /*

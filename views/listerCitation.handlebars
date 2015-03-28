@@ -1,22 +1,28 @@
-{{> enTete}}
-{{> menu}}
-
+{{> enTete}} {{> menu}}
 <h1>Liste des citations déposées</h1>
-<p>Il y a actuellement {{nbCitation}} citations enregistrées</p>
-
 <table>
-  <tr>
-    <th>Nom de l'enseignant</th>
-    <th>Libellé</th>
-    <th>Date</th>
-    <th>Moyenne des notes</th>
-  </tr>
-  {{#each listeCitation}} <!--  parcours de listeCitation -->
     <tr>
-      <td>{{this.per_nom}}</td>
-      <td>{{this.cit_libelle}}</td>
-      <td>{{this.cit_date}}</td>
-      <td>{{this.cit_moy}}</td>
+        <th>Nom de l'enseignant</th>
+        <th>Libellé</th>
+        <th>Date</th>
+        <th>Moyenne des notes</th>
+        {{#if session.per_login}}
+          <th>Noter</th>
+        {{/if}}
     </tr>
-  {{/each}}
+    {{#each listeCitation}}
+      <tr>
+          <td>{{this.per_prenom}} {{this.per_nom}}</td>
+          <td>{{this.cit_libelle}}</td>
+          <td>{{this.cit_date}}</td>
+          <td>{{this.cit_moy}}</td>
+          {{#if ../session.per_login}}
+              {{#if this.estNotable}}
+                  <td><a href="/noterCitation/{{this.cit_num}}"><img title="Cliquez pour noter" src="/image/modifier.png"></a></td>
+              {{else}}
+                  <td><img title="Déjà notée" src="/image/erreur.png"></td>
+              {{/if}}
+          {{/if}}
+      </tr>
+    {{/each}}
 </table>

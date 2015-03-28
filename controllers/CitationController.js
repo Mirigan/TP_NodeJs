@@ -8,20 +8,45 @@ var model_m = require('../models/mot.js');
 
 // ////////////////////////////////////////////// L I S T E R     C I T A T I O N
 
-module.exports.ListerCitation = 	function(request, response){
-   response.title = 'Liste des citations';
+module.exports.ListerCitation = function (request, response) {
+    response.title = 'Liste des citations';
 
-   model.getListeCitation( function(err, result){
-     if (err) {
-         // gestion de l'erreur
-         console.log(err);
-         return;
-     }
-     response.listeCitation = result;
-     response.nbCitation = result.length;
-     response.render('listerCitation', response);
-     });
+    if (request.session.per_login){
+      model.getListeCitation(function (err, result) {
+          if (err) {
+              console.log(err);
+              return;
+          }
+
+          model_v.getListeVote(function (err, result2) {
+              if (err) {
+                  console.log(err);
+                  return;
+              }
+
+              for (var I = 0; I < result.length; I++) {
+                  result[I].estNotable = true;
+                  for (var J = 0; J < result2.length; J++) {
+                      if (result[I].cit_num == result2[J].cit_num && result2[J].per_num == request.session.per_num_co) {
+                          result[I].estNotable = false;
+                      }
+                  }
+              }
+
+              response.listeCitation = result;
+              response.nbCitation = result.length;
+
+              response.render('listerCitation', response);
+          });
+      });
+    }//fin si login
+
+    else{
+      response.redirect('/');
+    }
 };
+
+
 
 //////////////////////////////////////////////// A J O U T E R     C I T A T I O N
 
@@ -46,8 +71,6 @@ module.exports.AjouterCitation = 	function(request, response){
 } ;
 
 /*
-pour le teste des mots interdit voir avec le module string et replaceAll pour remplacer les mots
-par des tierts
 */
 module.exports.AjouterCitationOk = function(request, response){
   response.title = 'Ajouter une citation';
@@ -63,8 +86,8 @@ module.exports.AjouterCitationOk = function(request, response){
       var citation = request.body.citation;
       var estCorrecte = true;
       var listeMotsChanges = [];
-      for(var index=0; index<result.length; index++){
-          var mot = result[index].mot_interdit;
+      for(var I=0; I<result.length; I++){
+          var mot = result[I].mot_interdit;
           var motInterdit = citation.match(new RegExp(mot, "i"));
           while(motInterdit){
               estCorrecte = false;
@@ -174,4 +197,41 @@ module.exports.RechercherCitationOk = function(request, response){
    response.redirect('/');
   }
 
+};
+
+
+/////////////////// Notation d'une citation
+module.exports.NoterCitation = function (request, response) {
+  response.title = 'Noter une citation';
+
+  if (request.session.per_login){
+    var id = parseInt(request.param("id"));
+    response.idCitation = id;
+    response.render('noterCitation', response);
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
+};
+
+module.exports.NoterCitationOk = function (request, response) {
+  response.title = 'Noter une citation';
+
+  if (request.session.per_login){
+    var data = {
+        cit_num: parseInt(request.param("id")),
+        per_num: request.session.per_num_co,
+        vot_valeur: request.body.note
+    }
+    model_v.noteCitation(data, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        response.render('noterCitationOk', response);
+    });
+  }//fin si login
+  else{
+    response.redirect('/');
+  }
 };
