@@ -121,7 +121,6 @@ module.exports.AjouterCitationOk = function(request, response){
               cit_date_depo : date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
 
           };
-          console.log(data);
           model.ajouterCitation(data, function(err, result){
             if(err){
               // gestion de l'erreur
@@ -274,9 +273,8 @@ module.exports.ValiderCitationOk = function (request, response) {
 
   if (request.session.per_admin){
     var id = parseInt(request.param("id"));
-    var date = new Date();
-    var dateValide = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    model.citationValidee(id, request.session.per_num_co, dateValide, function (err, result) {
+
+    model.citationValidee(id, request.session.per_num_co, function (err, result) {
         if (err) {
             console.log(err);
             return;
