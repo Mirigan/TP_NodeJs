@@ -274,7 +274,7 @@ module.exports.ValiderCitationOk = function (request, response) {
 
   if (request.session.per_admin){
     var id = parseInt(request.param("id"));
-    model.citationValidee(id, function (err, result) {
+    model.citationValidee(id, request.session.per_num_co, function (err, result) {
         if (err) {
             console.log(err);
             return;

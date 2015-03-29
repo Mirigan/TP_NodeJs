@@ -52,13 +52,13 @@ module.exports.getListeCitationNonValide = function (callback) {
 
 
 // permet de valider une citation
-module.exports.citationValidee = function (id, callback) {
+module.exports.citationValidee = function (id, id_per_valide, callback) {
   db.getConnection(function(err, connexion) {
     if(!err){
       var date = new Date();
       var dateValide = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 
-      connexion.query('UPDATE citation SET cit_valide = 1, cit_date_valide = '+dateValide+' per_num_valide = '+request.session.per_num_co+' WHERE cit_num='+id, callback);
+      connexion.query('UPDATE citation SET cit_valide = 1, cit_date_valide = '+dateValide+', per_num_valide = '+id_per_valide+' WHERE cit_num='+id, callback);
       connexion.release();
     }
   });
