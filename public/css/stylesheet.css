@@ -65,13 +65,13 @@ body {
     box-shadow: 0 0 5px #000000 inset;
     color: #222222;
     font-size: 18px;
-    height: 50px;
+    height: auto;
     padding: 10px;
     position: absolute;
     right: 30px;
     text-align: center;
-    top: 65%;
-    width: 200px;
+    top: 30px;
+    width: auto;
 }
 #connect a {
     color: #222222;
@@ -166,4 +166,22 @@ h1 {
 .centreImage {
     padding: 20px;
     width: 30%;
+}
+
+fieldset {
+    border: solid black 1px;
+    width: 70%;
+    margin: auto;
+}
+
+input[type="submit"] {
+    margin: 15px auto;
+}
+
+#citations{
+  width : 90%;
+}
+
+#citations tr th, #citations tr th{
+  padding : 3px;
 }
