@@ -152,24 +152,21 @@ module.exports.RechercherCitation = function(request, response){
    response.title = 'Rechercher des citations';
 
    if (request.session.per_login){
-     async.parallel([
-       function(callback){
-         model.getListePersonneDepCitValide(function (errSal, resultSal) {callback(null, resultSal) });
-       },
-       function(callback){
-         model.getListeDateCitation(function (errDate, resultDate) { callback(null, resultDate) });
-       },
-       function(callback){
-         model_v.getNote(function (errVote, resultVote) { callback(null, resultVote) });
-       }
-       ],
-       function(err, result){
-         response.listeSalaries = result[0];
-         response.listeDate = result[1];
-         response.listeVote = result[2];
-         response.render('rechercherCitation', response);
-       }
-     );//async
+     model.getListeCitationDate(function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        response.listeCitationDate = result;
+        model.getListeCitationSalarie(function (err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            response.listeCitationSalarie = result;
+            response.render('rechercherCitation', response);
+        });
+    });
    }//fin si login
 
    else{
@@ -181,13 +178,33 @@ module.exports.RechercherCitationOk = function(request, response){
   response.title = 'Rechercher des citations';
 
   if (request.session.per_login){
-    /*if(request.body.enseignant == "tout"){
+    var data = {};
+    if (request.body.enseignant != "0") {
+        data.per_num = request.body.enseignant;
+    }
+    if (request.body.date != "0") {
+        var dateAnglaise = request.body.date;
+        var membres = dateAnglaise.split('/');
+        dateAnglaise = membres[2] + "-" + membres[1] + "-" + membres[0];
+        data.cit_date = dateAnglaise;
+    }
+    if (request.body.note != "-1") {
+        data.noteMoinsUn = parseInt(request.body.note) - 1;
+        data.notePlusUn = parseInt(request.body.note) + 1;
+    }
+    model.getRechercheCitation(data, function (err, result) {
+        if (result != undefined) {
+            for (var i = 0; i < result.length; i++) {
+                if (result[i].vot_moy == null) {
+                    result[i].vot_moy = 'Aucune note';
+                }
+            }
 
-    }*/
-
-
-
-    response.render('rechercheCitationOk', response);
+        }
+        response.citation = 1;
+        response.listeCitation = result;
+        response.render('rechercherCitation', response);
+    });
   }//fin si login
   else{
    response.redirect('/');

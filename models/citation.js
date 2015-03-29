@@ -86,21 +86,22 @@ module.exports.ajouterCitation = function (citation, callback){
 /**
 * fonction de recherche de citations par date
 */
-module.exports.getListeDateCitation = function(callback){
-  // connection à la base
-  db.getConnection(function(err, connexion){
-    if(!err){
-      // s'il n'y a pas d'erreur de connexion
-      // execution de la requête SQL
-      var req = "SELECT distinct date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c ";
-      req += " where cit_valide = 1"
-      connexion.query(req, callback);
+module.exports.getListeCitationDate = function (callback) {
+    db.getConnection(function (err, connexion) {
+        if (!err) {
+            connexion.query("SELECT c.cit_num, date_format(cit_date, '%d/%m/%Y') as cit_date FROM citation c WHERE cit_valide=1 GROUP BY c.cit_date", callback);
+            connexion.release();
+        }
+    });
+};
 
-      //la connexion retourne dans le pool
-      connexion.release();
-    }
-
-  });
+module.exports.getListeCitationSalarie = function (callback) {
+    db.getConnection(function (err, connexion) {
+        if (!err) {
+            connexion.query("SELECT c.cit_num, c.per_num, per_nom , per_prenom FROM citation c JOIN personne p ON c.per_num = p.per_num WHERE cit_valide=1 GROUP BY c.per_num", callback);
+            connexion.release();
+        }
+    });
 };
 
 module.exports.getListePersonneDepCitValide = function(callback){
@@ -173,4 +174,25 @@ module.exports.supprimerCitation = function (id, callback) {
         connexion.release();
     }
   });
+};
+
+// permet d'effectuer une recherche sur les citations
+module.exports.getRechercheCitation = function (data, callback) {
+    db.getConnection(function (err, connexion) {
+        if (!err) {
+            var requete = "SELECT c.cit_num, per_nom, per_prenom, cit_libelle, DATE_FORMAT(cit_date, '%d/%m/%Y') AS cit_date, AVG(vot_valeur) as vot_moy FROM citation c LEFT JOIN personne p ON c.per_num = p.per_num LEFT JOIN vote v on v.cit_num=c.cit_num WHERE cit_valide = 1";
+            if (data.per_num) {
+                requete += " AND c.per_num=" + data.per_num;
+            }
+            if (data.cit_date) {
+                requete += " AND cit_date='" + data.cit_date + "'";
+            }
+            requete += " GROUP BY c.cit_num";
+            if (data.noteMoinsUn) {
+                requete += " HAVING vot_moy>=" + data.noteMoinsUn + " AND vot_moy<=" + data.notePlusUn;
+            }
+        }
+        connexion.query(requete, callback);
+        connexion.release();
+    });
 };
