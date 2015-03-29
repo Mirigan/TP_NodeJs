@@ -1,13 +1,15 @@
 {{> enTete}}
 {{> menu}}
 
+<h1>Connexion</h1>
+
 <p>
   {{#if connexionOk}}
     <img src="/image/valid.png" alt="Valide!" >
-    Merci, vous êtes connecté {{session.per_login}}
+    Merci, vous êtes connecté {{session.per_login}}.
   {{else}}
     <img src="/image/erreur.png"/>
-    Echec de la connexion!
+    Echec de la connexion !
   {{/if}}
 </p>
 <div id="redirection"></div>

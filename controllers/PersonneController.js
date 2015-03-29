@@ -236,7 +236,16 @@ module.exports.ModifierPersonne2 = function(request, response){
      request.session.personne.num = request.params.numPersonne; //numéro de la personne à modifier
 
      if(!request.session.per_admin){
-       response.render('modifierPersonne2', response);
+       model.getLoginPers(request.session.personne.num, function(err, result){
+         if(err){
+           // gestion de l'erreur
+           console.log(err);
+           return;
+         }
+         response.login = result[0].per_login;
+         request.session.login = response.login;
+         response.render('modifierPersonne2', response);
+       });
      }
      else{
        response.connexionOk = true;
@@ -282,19 +291,21 @@ module.exports.ModifierPersonne3 = function(request, response){
    // Seules les personnes connectées peuvent modifier une personne
    if (request.session.per_login){
      //Authentification de la personne
-     var data = {login:request.body.login, pass:request.body.pass};
+     var data = {login:request.session.login, pass:request.body.pass};
      model.getLoginOk(data,function(err, result){
        if (err) {
            // gestion de l'erreur
            console.log(err);
            return;
        }
+       request.session.login = null;
 
        if(result.length === 0)
        {
          console.log('mot de passe ou login non valide');
          response.connexionOk = false;
          request.session.personne = null;
+         response.render('modifierPersonne3', response);
        }
        else
        {
@@ -317,14 +328,13 @@ module.exports.ModifierPersonne3 = function(request, response){
 
              if(typeof(result[0]) !== 'undefined') //étudiant
              {
-               response.isEtudiant = true;
+               request.session.personne.isEtudiant = true;
              }
              else //salarié
              {
-               response.isEtudiant = false;
+               request.session.personne.isEtudiant = false;
              }
 
-             request.session.personne.isEtudiant = response.isEtudiant;
              response.render('modifierPersonne3', response);
            });
          });

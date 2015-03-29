@@ -3,59 +3,35 @@
 <h1> Ajouter une citation</h1>
 <form method="post" action="/ajouterCitationOk" name="ajoutCitation">
   <fieldset>
-  <table>
-  <tr>
-    <td>
-      Enseignant :
-    </td>
-    <td>
-      <select id="selectEnseignant" name="selectEnseignant">
-        {{#each listeSalaries}}
-          <option value="{{this.per_num}}">{{this.per_nom}}</option>
-        {{/each}}
-      </select>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Date citation :
-    </td>
-    <td>
-          {{#if date}}
-            <input type="text" placeholder="jj/mm/aaaa" pattern="[0-3][0-9]/[0-1][0-9]/[1-2][0-9][0-9][0-9]" name="date" id="date" value={{date}} required>
-          {{else}}
-            <input type="text" placeholder="jj/mm/aaaa" pattern="[0-3][0-9]/[0-1][0-9]/[1-2][0-9][0-9][0-9]" name="date" id="date" required>
-          {{/if}}
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Citation :
-    </td>
-    <td>
-            {{#if citation}}
-      <textarea name="citation" id="citation" placeholder="..." required>{{citation}}</textarea>
-            {{else}}
-            <textarea name="citation" id="citation" placeholder="..." required></textarea>
-            {{/if}}
-    </td>
-  </tr>
-    {{#if motsInterdits}}
-    <tr>
-    <td colspan="2">
-      {{#each motsInterdits}}
-                <p><img src="/image/erreur.png"> Le mot "{{this}}" n'est pas autorisé.</p>
-            {{/each}}
-    </td>
-  </tr>
+    <legend>Informations sur la citation</legend>
+
+    <label for="selectEnseignant">Enseignant : </label>
+    <select id="selectEnseignant" name="selectEnseignant">
+      {{#each listeSalaries}}
+        <option value="{{this.per_num}}">{{this.per_nom}}</option>
+      {{/each}}
+    </select>
+    <br/>
+
+    <label for="date">Date : </label>
+    {{#if date}}
+      <input type="text" placeholder="jj/mm/aaaa" pattern="[0-3][0-9]/[0-1][0-9]/[1-2][0-9][0-9][0-9]" name="date" id="date" value={{date}} required>
+    {{else}}
+      <input type="text" placeholder="jj/mm/aaaa" pattern="[0-3][0-9]/[0-1][0-9]/[1-2][0-9][0-9][0-9]" name="date" id="date" required>
     {{/if}}
-  <tr>
-    <td colspan="2">
-      <input type="submit" value="Valider">
-    </td>
-  </tr>
-  </table>
+    <br/>
+
+    <label for="citation">Citation : </label>
+    <textarea name="citation" id="citation" required>{{citation}}</textarea>
+    {{#if motsInterdits}}
+      <br/>
+      {{#each motsInterdits}}
+        <p><img src="/image/erreur.png"> Le mot "{{this}}" n'est pas autorisé...</p>
+      {{/each}}
+    {{/if}}
   </fieldset>
+
+  <input type="submit" value="Valider"/>
 </form>
 <p id="enseignant" style="display: none;">{{enseignant}}</p>
 
